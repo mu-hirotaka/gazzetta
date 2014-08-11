@@ -17,6 +17,8 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 });
 
 var Player = model.Player;
+var Rating = model.Rating;
+var Opinion = model.Opinion;
 var io = require('socket.io')(server);
 
 var groupId = 1;
@@ -25,16 +27,14 @@ io.on('connection', function(socket) {
   emitBaseInfo(socket);
 
   socket.on('post rating', function(data) {
-    console.log(data);
+    updateRating(data);
   });
 
   socket.on('post mom', function(data) {
 
-
   });
 
   socket.on('post summary', function(data) {
-
 
   });
 
@@ -44,4 +44,32 @@ function emitBaseInfo(socket) {
   Player.find({ group: groupId }).exec(function(err, items) {
     socket.emit('login', { players: items });
   });
+}
+
+function updateRating(data) {
+  var id = data.id;
+  var formatedRating = parseFloat(data.rating);
+  var opinion = data.opinion;
+  Rating.findOne({ id: data.id }, function(err, rating) {
+    if (rating === null) {
+      var newRecord = new Rating({id: id, sum: formatedRating, num: 1});
+      newRecord.save(function(err) {
+
+      });
+    } else {
+      rating.num = rating.num + 1;
+      rating.sum = rating.sum + formatedRating;
+      rating.save();
+    }
+    if (opinion.length) {
+      var newOpinion = new Opinion({ id: id, opinion: opinion, createdAt: getUnixTime() });
+      newOpinion.save(function(err) {
+
+      });
+    }
+  });
+}
+
+function getUnixTime() {
+   return parseInt((new Date)/1000);
 }
