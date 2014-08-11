@@ -2,6 +2,7 @@
 var debug = require('debug')('gazzetta');
 var app = require('../app');
 var config = require('../config.js');
+var model = require('../models.js');
 
 if (app.get('env') === 'production') {
   app.set('host', config.production.host);
@@ -15,5 +16,32 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
 
+var Player = model.Player;
 var io = require('socket.io')(server);
 
+var groupId = 1;
+io.on('connection', function(socket) {
+
+  emitBaseInfo(socket);
+
+  socket.on('post rating', function(data) {
+    console.log(data);
+  });
+
+  socket.on('post mom', function(data) {
+
+
+  });
+
+  socket.on('post summary', function(data) {
+
+
+  });
+
+});
+
+function emitBaseInfo(socket) {
+  Player.find({ group: groupId }).exec(function(err, items) {
+    socket.emit('login', { players: items });
+  });
+}
