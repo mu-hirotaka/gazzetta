@@ -13,5 +13,9 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "ejs": "~0.8.5"
+  },
+  "devDependencies": {
+    "socket.io": "~1.0.6",
+    "forever": "~0.11.1"
   }
 }

@@ -1,9 +1,19 @@
 #!/usr/bin/env node
 var debug = require('debug')('gazzetta');
 var app = require('../app');
+var config = require('../config.js');
 
-app.set('port', process.env.PORT || 3000);
+if (app.get('env') === 'production') {
+  app.set('host', config.production.host);
+  app.set('port', config.production.port);
+} else {
+  app.set('host', config.dev.host);
+  app.set('port', config.dev.port);
+}
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), app.get('host'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
+
+var io = require('socket.io')(server);
+
