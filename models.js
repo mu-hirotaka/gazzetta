@@ -26,3 +26,19 @@ var Opinion = new mongoose.Schema({
 });
 
 exports.Opinion = db.model('opinion', Opinion);
+
+var Summary = new mongoose.Schema({
+  group:     { type: Number },
+  comment:   { type: String },
+  createdAt: { type: Number }
+});
+
+exports.Summary = db.model('summary', Summary);
+
+var Mom = new mongoose.Schema({
+  id:    { type: Number },
+  group: { type: Number },
+  num:   { type: Number },
+});
+
+exports.Mom = db.model('mom', Mom);

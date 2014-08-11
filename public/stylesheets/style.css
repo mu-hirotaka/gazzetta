@@ -57,4 +57,67 @@ ul#player-list {
   border-color: #ffea00;
   color: #000;
   font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
+
+#summary {
+  text-align: center;
+}
+
+#summary > p {
+  background-color: #ffd900;
+  color: #000;
+  font-weight: bold;
+  padding: 4px;
+  margin-bottom: 0px;
+}
+
+#summary > textarea {
+  width: 100%;
+  resize: none;
+  border-left: 5px solid #ffd900;
+  border-right: 5px solid #ffd900;
+  border-bottom: 5px solid #ffd900;
+  border-top: none;
+}
+
+#summary > button {
+  background-color: #ffd900;
+  border: 2px solid #333;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+#mom {
+  text-align: center;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-left: 5px solid #ffd900;
+  border-right: 5px solid #ffd900;
+  border-bottom: 5px solid #ffd900;
+  border-top: none;
+}
+
+#mom-select {
+  margin-top: 5px;
+}
+
+#mom > p {
+  background-color: #ffd900;
+  color: #000;
+  font-weight: bold;
+  padding: 4px;
+  margin-bottom: 0px;
+}
+
+#mom-btn {
+  margin-left: 10px;
+  margin-top: 5px;
+  background-color: #ffd900;
+  border: 2px solid #333;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+

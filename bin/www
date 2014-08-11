@@ -19,6 +19,8 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 var Player = model.Player;
 var Rating = model.Rating;
 var Opinion = model.Opinion;
+var Summary = model.Summary;
+var Mom = model.Mom;
 var io = require('socket.io')(server);
 
 var groupId = 1;
@@ -31,18 +33,18 @@ io.on('connection', function(socket) {
   });
 
   socket.on('post mom', function(data) {
-
+    updateMom(data);
   });
 
   socket.on('post summary', function(data) {
-
+    insertSummaryComment(data);
   });
 
 });
 
 function emitBaseInfo(socket) {
   Player.find({ group: groupId }).exec(function(err, items) {
-    socket.emit('login', { players: items });
+    socket.emit('login', { players: items, group: groupId });
   });
 }
 
@@ -61,7 +63,7 @@ function updateRating(data) {
       rating.sum = rating.sum + formatedRating;
       rating.save();
     }
-    if (opinion.length) {
+    if (opinion.length > 0) {
       var newOpinion = new Opinion({ id: id, opinion: opinion, createdAt: getUnixTime() });
       newOpinion.save(function(err) {
 
@@ -70,6 +72,32 @@ function updateRating(data) {
   });
 }
 
+function insertSummaryComment(data) {
+  var comment = data.comment;
+  var group = data.group;
+  if (comment.length > 0) {
+    var newSummary = new Summary({ group: group, comment: comment, createdAt: getUnixTime() });
+    newSummary.save(function(err) {
+
+    });
+  }
+}
+
+function updateMom(data) {
+  Mom.findOne({ id: data.id }, function(err, mom) {
+    if (mom === null) {
+      var newRecord = new Mom({id: data.id, num: 1, group: data.group});
+      newRecord.save(function(err) {
+
+      });
+    } else {
+      mom.num = mom.num + 1;
+      mom.save();
+    }
+  });
+}
+
 function getUnixTime() {
    return parseInt((new Date)/1000);
 }
+

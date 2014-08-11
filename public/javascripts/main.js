@@ -1,7 +1,7 @@
 $(function() {
   var socket = io.connect($('#uri').data('uri'));
 
-  function createPlayersList(data) {
+  function init(data) {
     var players = data.players;
     _.each(players, function(item) {
       var cache = localStorage.getItem('player-id' + item.id);
@@ -54,6 +54,38 @@ $(function() {
 
     });
 
+    var summaryCache = localStorage.getItem('summary-' + data.group);
+    if (summaryCache) {
+        $('#summary').hide();
+    } else {
+      $('#summary-btn').on('click', function() {
+        socket.emit('post summary', {
+          comment: $('#summary-comment').val(),
+          group: data.group
+        });
+        $('#summary').fadeOut('normal');
+        localStorage.setItem('summary-' + data.group, data.group);
+      });
+    }
+
+    var momCache = localStorage.getItem('mom-' + data.group);
+    if (momCache) {
+      $('#mom').hide();
+    } else {
+      _.each(players, function(item) {
+        $('#mom-select').append('<option value="' + item.id + '">' + item.name + '</option>');
+      });
+
+      $('#mom-btn').on('click', function() {
+        socket.emit('post mom', {
+          id: $('#mom-select').val(),
+          group: data.group
+        });
+        $('#mom').fadeOut('normal');
+        localStorage.setItem('mom-' + data.group, data.group);
+      });
+    }
+
     $('.player-btn').on('click', function() {
       var playerId = $(this).data('player-id');
       var rating = $('#player-select-id' + playerId).val();
@@ -61,6 +93,7 @@ $(function() {
       localStorage.setItem('player-id' + playerId, rating);
       socket.emit('post rating', {
         id: playerId,
+        group: data.group,
         rating: rating,
         opinion: opinion,
       });
@@ -68,6 +101,6 @@ $(function() {
     });
   }
   socket.on('login', function(data) {
-    createPlayersList(data);
+    init(data);
   });
 });
