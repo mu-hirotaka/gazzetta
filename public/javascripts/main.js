@@ -111,8 +111,7 @@ $(function() {
 
     var $table = $('#user-rating');
     $table.empty();
-    $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead>');
-    $table.append('<tbody></tbody>');
+    $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
     var $tbody = $('#user-rating > tbody');
 
     var sortedRatings = _.sortBy(data.ratings, function(item) {
@@ -135,6 +134,23 @@ $(function() {
         }
       }
       $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].name + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
+      rank++;
+    });
+
+    var $momTable = $('#user-mom');
+    $momTable.empty();
+    $momTable.append('<thead><tr><th>順位</th><th>Name</th><th>MOM獲得数</th></tr></thead><tbody></tbody>');
+    var $momTbody = $('#user-mom > tbody');
+    var sortedMoms = _.sortBy(data.moms, function(item) {
+      return - item.num;
+    });
+    rank = 1;
+    _.each(sortedMoms, function(item) {
+      var name = '該当者なし';
+      if (item.id > 0) {
+        name = playersMap[item.id].name;
+      }
+      $momTbody.append('<tr><td>' + rank + '</td><td>' + name + '</td><td>' + item.num + '</td></tr>');
       rank++;
     });
 
