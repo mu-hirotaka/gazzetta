@@ -121,3 +121,10 @@ ul#player-list {
   box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 
+#player-opinion > h3 {
+  font-size: 18px;
+  border-bottom: solid 2px #000;
+  padding-bottom: 4px;
+  margin-left: 5px;
+  margin-right: 5px;
+}

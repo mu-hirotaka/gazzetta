@@ -100,7 +100,66 @@ $(function() {
       $('#player-id-' + playerId).fadeOut('normal');
     });
   }
+
+  function updateCommentView(data) {
+    var playersMap = {};
+    _.each(data.players, function(item) {
+      playersMap[item.id] = item;
+    });
+
+    var $table = $('#user-rating');
+    $table.empty();
+    $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead>');
+    $table.append('<tbody></tbody>');
+    var $tbody = $('#user-rating > tbody');
+
+    var sortedRatings = _.sortBy(data.ratings, function(item) {
+      return - item.sum / item.num;
+    });
+    var rank = 1;
+    _.each(sortedRatings, function(item) {
+      var avg = (item.sum / item.num).toFixed(1);
+      var myRating = localStorage.getItem('player-id' + item.id);
+      var myRatingStr = '評価なし';
+      if (myRating) {
+        myRating = parseFloat(myRating);
+        if (myRating > 0) {
+          var diff = (myRating - avg).toFixed(1);
+          if (diff > 0) {
+            myRatingStr = myRating.toFixed(1) + '<span style="color:#DC143C;">(+' + diff + ')</span>';
+          } else {
+            myRatingStr = myRating.toFixed(1) + '<span style="color:#0000CD;">(' + diff + ')</span>';
+          }
+        }
+      }
+      $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].name + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
+      rank++;
+    });
+
+    var $opinion = $('#player-opinion');
+    $opinion.empty();
+    _.each(playersMap, function(val, key, list) {
+      $opinion.append('<h3>' + val.name + '</h3>');
+      $opinion.append('<ul id="player-comment-' + val.id + '"></ul>');
+    });
+    _.each(data.opinions, function(item) {
+      var $comment = $('#player-comment-' + item.id);
+      $comment.prepend('<li>' + item.opinion + '</li>');
+    });
+
+    $opinion.append('<h3>総評</h3><ul id="summaries"></ul>');
+    var $summary = $('#summaries');
+    _.each(data.summaries, function(item) {
+      $summary.prepend('<li>' + item.comment + '</li>');
+    });
+  }
+
   socket.on('login', function(data) {
     init(data);
+    updateCommentView(data);
+  });
+
+  socket.on('broadcast results', function(data) {
+    updateCommentView(data);
   });
 });

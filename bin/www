@@ -30,21 +30,46 @@ io.on('connection', function(socket) {
 
   socket.on('post rating', function(data) {
     updateRating(data);
+    broadcastBaseInfo();
   });
 
   socket.on('post mom', function(data) {
     updateMom(data);
+    broadcastBaseInfo();
   });
 
   socket.on('post summary', function(data) {
     insertSummaryComment(data);
+    broadcastBaseInfo();
   });
 
 });
 
 function emitBaseInfo(socket) {
-  Player.find({ group: groupId }).exec(function(err, items) {
-    socket.emit('login', { players: items, group: groupId });
+  Player.find({ group: groupId }).exec(function(err, players) {
+    Rating.find({ group: groupId }).exec(function(err, ratings) {
+      Opinion.find({ group: groupId }).exec(function(err, opinions) {
+        Summary.find({ group: groupId }).exec(function(err, summaries) {
+          Mom.find({ group: groupId }).exec(function(err, moms) {
+            socket.emit('login', { players: players, ratings: ratings, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
+          });
+        });
+      });
+    });
+  });
+}
+
+function broadcastBaseInfo() {
+  Player.find({ group: groupId }).exec(function(err, players) {
+    Rating.find({ group: groupId }).exec(function(err, ratings) {
+      Opinion.find({ group: groupId }).exec(function(err, opinions) {
+        Summary.find({ group: groupId }).exec(function(err, summaries) {
+          Mom.find({ group: groupId }).exec(function(err, moms) {
+            io.sockets.emit('broadcast results', { players: players, ratings: ratings, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
+          });
+        });
+      });
+    });
   });
 }
 
@@ -54,7 +79,7 @@ function updateRating(data) {
   var opinion = data.opinion;
   Rating.findOne({ id: data.id }, function(err, rating) {
     if (rating === null) {
-      var newRecord = new Rating({id: id, sum: formatedRating, num: 1});
+      var newRecord = new Rating({ id: id, group: groupId, sum: formatedRating, num: 1 });
       newRecord.save(function(err) {
 
       });
@@ -64,7 +89,7 @@ function updateRating(data) {
       rating.save();
     }
     if (opinion.length > 0) {
-      var newOpinion = new Opinion({ id: id, opinion: opinion, createdAt: getUnixTime() });
+      var newOpinion = new Opinion({ id: id, group: groupId, opinion: opinion, createdAt: getUnixTime() });
       newOpinion.save(function(err) {
 
       });
