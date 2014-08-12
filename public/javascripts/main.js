@@ -139,7 +139,7 @@ $(function() {
 
     var $momTable = $('#user-mom');
     $momTable.empty();
-    $momTable.append('<thead><tr><th>順位</th><th>Name</th><th>MOM獲得数</th></tr></thead><tbody></tbody>');
+    $momTable.append('<thead><tr><th>順位</th><th>Name</th><th>MoM獲得数</th></tr></thead><tbody></tbody>');
     var $momTbody = $('#user-mom > tbody');
     var sortedMoms = _.sortBy(data.moms, function(item) {
       return - item.num;
