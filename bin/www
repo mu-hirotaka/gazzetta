@@ -5,7 +5,7 @@ var config = require('../config.js');
 var model = require('../models.js');
 
 if (app.get('env') === 'production') {
-  app.set('host', config.production.host);
+//  app.set('host', config.production.host);
   app.set('port', config.production.port);
 } else {
   app.set('host', config.dev.host);
