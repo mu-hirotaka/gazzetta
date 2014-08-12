@@ -46,7 +46,7 @@ io.on('connection', function(socket) {
 });
 
 function emitBaseInfo(socket) {
-  Player.find({ group: groupId }).exec(function(err, players) {
+  Player.find({ group: groupId }).sort('id').exec(function(err, players) {
     Rating.find({ group: groupId }).exec(function(err, ratings) {
       Opinion.find({ group: groupId }).exec(function(err, opinions) {
         Summary.find({ group: groupId }).exec(function(err, summaries) {
@@ -62,8 +62,8 @@ function emitBaseInfo(socket) {
 function broadcastBaseInfo() {
   Player.find({ group: groupId }).exec(function(err, players) {
     Rating.find({ group: groupId }).exec(function(err, ratings) {
-      Opinion.find({ group: groupId }).exec(function(err, opinions) {
-        Summary.find({ group: groupId }).exec(function(err, summaries) {
+      Opinion.find({ group: groupId }).sort('-createdAt').exec(function(err, opinions) {
+        Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
           Mom.find({ group: groupId }).exec(function(err, moms) {
             io.sockets.emit('broadcast results', { players: players, ratings: ratings, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
           });

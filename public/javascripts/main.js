@@ -1,4 +1,5 @@
 $(function() {
+  var VISIBLE_LI_NUM = 3;
   var socket = io.connect($('#uri').data('uri'));
 
   function init(data) {
@@ -127,9 +128,11 @@ $(function() {
         if (myRating > 0) {
           var diff = (myRating - avg).toFixed(1);
           if (diff > 0) {
-            myRatingStr = myRating.toFixed(1) + '<span style="color:#DC143C;">(+' + diff + ')</span>';
+            myRatingStr = myRating.toFixed(1) + '<span class="plus">(+' + diff + ')</span>';
+          } else if (diff >= 0) {
+            myRatingStr = myRating.toFixed(1) + '<span class="zero">(' + diff + ')</span>';
           } else {
-            myRatingStr = myRating.toFixed(1) + '<span style="color:#0000CD;">(' + diff + ')</span>';
+            myRatingStr = myRating.toFixed(1) + '<span class="minus">(' + diff + ')</span>';
           }
         }
       }
@@ -154,21 +157,30 @@ $(function() {
       rank++;
     });
 
+    var commentCount = {};
     var $opinion = $('#player-opinion');
     $opinion.empty();
     _.each(playersMap, function(val, key, list) {
       $opinion.append('<h3>' + val.name + '</h3>');
       $opinion.append('<ul id="player-comment-' + val.id + '"></ul>');
+      commentCount[val.id] = 0;
     });
     _.each(data.opinions, function(item) {
-      var $comment = $('#player-comment-' + item.id);
-      $comment.prepend('<li>' + item.opinion + '</li>');
+      if ( VISIBLE_LI_NUM > commentCount[item.id] ) {
+        var $comment = $('#player-comment-' + item.id);
+        $comment.append('<li>' + item.opinion + '</li>');
+      }
+      commentCount[item.id]++;
     });
 
     $opinion.append('<h3>総評</h3><ul id="summaries"></ul>');
     var $summary = $('#summaries');
+    var summaryCount = 0;
     _.each(data.summaries, function(item) {
-      $summary.prepend('<li>' + item.comment + '</li>');
+      if (VISIBLE_LI_NUM > summaryCount) {
+        $summary.append('<li>' + item.comment + '</li>');
+      }
+      summaryCount++;
     });
   }
 

@@ -128,3 +128,20 @@ ul#player-list {
   margin-left: 5px;
   margin-right: 5px;
 }
+
+#player-opinion > ul {
+  padding-left: 20px;
+}
+
+span.plus {
+  color: #DC143C;
+}
+
+span.minus {
+  color: #0000CD;
+}
+
+span.zero {
+  color: #ffd900;
+}
+
