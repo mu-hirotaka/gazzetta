@@ -8,12 +8,13 @@
   </head>
   <body>
     <div class="container">
-      <ul>
-        <li><a href="/debug/players">player list</a></li>
-        <li><a href="/debug/create_player">create player</a></li>
-        <li><a href="/debug/localstrage_clear">localStrage cache clear</a></li>
-        <li><a href="/">back</a></li>
-      </ul>
+      <form action="/debug/create_player_done" method="POST">
+        <p>ID:<input type="text" name="id"></p>
+        <p>group:<input type="text" name="group"></p>
+        <p>Name:<input type="text" name="name"></p>
+        <p>ImagePath:<input type="text" name="imagePath"></p>
+        <input type="submit" value="送信">
+      </form>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>

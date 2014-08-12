@@ -9,10 +9,14 @@
   <body>
     <div class="container">
       <ul>
-        <li><a href="/debug/players">player list</a></li>
-        <li><a href="/debug/create_player">create player</a></li>
-        <li><a href="/debug/localstrage_clear">localStrage cache clear</a></li>
-        <li><a href="/">back</a></li>
+        <% for (var i=0; i < players.length; i++) { %>
+          <%= players[i].name %>
+          <form action="/debug/delete_player" method="POST">
+            <input type="hidden" name="id" value="<%= players[i].id %>"> 
+            <input type="submit" value="削除">
+          </form>
+        <% } %>
+        <li><a href="/">Home</a></li>
       </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
