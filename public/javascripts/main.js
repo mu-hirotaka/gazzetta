@@ -2,6 +2,8 @@ $(function() {
   var socket = io.connect($('#uri').data('uri'));
 
   function init(data) {
+    var $playerList = $('#player-list');
+    $playerList.empty();
     var players = data.players;
     _.each(players, function(item) {
       var cache = localStorage.getItem('player-id' + item.id);
@@ -9,7 +11,7 @@ $(function() {
         return;
       }
 
-      $('#player-list').append('<li id="player-id-' + item.id + '">'
+      $playerList.append('<li id="player-id-' + item.id + '">'
         + '<div class="row">'
           + '<div class="col-xs-3">'
             + '<div class="text-center">'
