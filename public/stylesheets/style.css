@@ -130,7 +130,8 @@ ul#player-list {
 }
 
 #player-opinion > ul {
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 10px;
 }
 
 span.plus {
@@ -143,5 +144,18 @@ span.minus {
 
 span.zero {
   color: #ffd900;
+}
+
+.bs-callout {
+  padding: 10px;
+  margin: 10px 10px 10px 0px;
+  border: 1px solid #333;
+  border-left-width: 5px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.bs-callout-info {
+  border-left-color: #ffd900;
 }
 

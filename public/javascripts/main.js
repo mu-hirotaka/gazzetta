@@ -168,7 +168,7 @@ $(function() {
     _.each(data.opinions, function(item) {
       if ( VISIBLE_LI_NUM > commentCount[item.id] ) {
         var $comment = $('#player-comment-' + item.id);
-        $comment.append('<li>' + item.opinion + '</li>');
+        $comment.append('<li><div class="bs-callout bs-callout-info">' + item.opinion + '</div></li>');
       }
       commentCount[item.id]++;
     });
@@ -178,7 +178,7 @@ $(function() {
     var summaryCount = 0;
     _.each(data.summaries, function(item) {
       if (VISIBLE_LI_NUM > summaryCount) {
-        $summary.append('<li>' + item.comment + '</li>');
+        $summary.append('<li><div class="bs-callout bs-callout-info">' + item.comment + '</div></li>');
       }
       summaryCount++;
     });
