@@ -175,8 +175,10 @@ $(function() {
     var options = {
       legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\">&nbsp;&nbsp;&nbsp;</span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
     };
+    $("#mom-chart").empty();
     var ctx = $("#mom-chart").get(0).getContext("2d");
     var momChart = new Chart(ctx).Doughnut(segments, options);
+    $("#mom-chart").css({'width':'150', 'height':'150'});
     $("#mom-legend").html(momChart.generateLegend());
 
 
