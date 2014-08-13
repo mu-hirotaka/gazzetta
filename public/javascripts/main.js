@@ -139,7 +139,7 @@ $(function() {
       $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].name + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
-
+/*
     var $momTable = $('#user-mom');
     $momTable.empty();
     $momTable.append('<thead><tr><th>順位</th><th>Name</th><th>MoM獲得数</th></tr></thead><tbody></tbody>');
@@ -156,6 +156,29 @@ $(function() {
       $momTbody.append('<tr><td>' + rank + '</td><td>' + name + '</td><td>' + item.num + '</td></tr>');
       rank++;
     });
+    */
+
+    var sortedMoms = _.sortBy(data.moms, function(item) {
+      return - item.num;
+    });
+    var segments = [];
+    var index = 0;
+    var CHART_COLOR = ['#aaf2fb', '#ffb6b9', '#ffe361', '#fbaa6e', '#A8BECB'];
+    _.each(sortedMoms, function(item) {
+      var name = '該当者なし';
+      if (item.id > 0) {
+        name = playersMap[item.id].name;
+      }
+      segments.push({ label: name, color: CHART_COLOR[index], value: item.num });
+      index++;
+    });
+    var options = {
+      legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\">&nbsp;&nbsp;&nbsp;</span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+    };
+    var ctx = $("#mom-chart").get(0).getContext("2d");
+    var momChart = new Chart(ctx).Doughnut(segments, options);
+    $("#mom-legend").html(momChart.generateLegend());
+
 
     var commentCount = {};
     var $opinion = $('#player-opinion');
