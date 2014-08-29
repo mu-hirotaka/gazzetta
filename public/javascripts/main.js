@@ -110,6 +110,7 @@ $(function() {
       playersMap[item.id] = item;
       playersMap[item.id].ratingSum = data.ratings.sum[index];
       playersMap[item.id].ratingNum = data.ratings.num[index];
+      playersMap[item.id].momNum = data.moms[index];
     });
 
     var $table = $('#user-rating');
@@ -117,10 +118,10 @@ $(function() {
     $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
     var $tbody = $('#user-rating > tbody');
 
-    var filtered = _.filter(playersMap, function(item) {
+    var filteredForRating = _.filter(playersMap, function(item) {
       return item.ratingSum > 0;
     });
-    var sortedRatings = _.sortBy(filtered, function(item) {
+    var sortedRatings = _.sortBy(filteredForRating, function(item) {
       return - item.ratingSum / item.ratingNum;
     });
     var rank = 1;
@@ -145,19 +146,17 @@ $(function() {
       rank++;
     });
 
-    var sortedMoms = _.sortBy(data.moms, function(item) {
-      return - item.num;
+    var filteredForMom = _.filter(playersMap, function(item) {
+      return item.momNum > 0;
+    });
+
+    var sortedMoms = _.sortBy(filteredForMom, function(item) {
+      return - item.momNum;
     });
     var segments = [];
-    var index = 0;
     var CHART_COLOR = ['#aaf2fb', '#ffb6b9', '#ffe361', '#fbaa6e', '#A8BECB'];
-    _.each(sortedMoms, function(item) {
-      var name = '該当者なし';
-      if (item.id > 0) {
-        name = playersMap[item.id].shortName;
-      }
-      segments.push({ label: name, color: CHART_COLOR[index], value: item.num });
-      index++;
+    _.each(sortedMoms, function(item, index) {
+      segments.push({ label: item.shortName, color: CHART_COLOR[index], value: item.momNum });
     });
     var options = {
       legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\">&nbsp;&nbsp;&nbsp;</span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"

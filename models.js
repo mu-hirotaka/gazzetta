@@ -37,10 +37,9 @@ var Summary = new mongoose.Schema({
 
 exports.Summary = db.model('summary', Summary);
 
-var Mom = new mongoose.Schema({
-  id:    { type: Number },
-  group: { type: Number },
-  num:   { type: Number },
-});
-
-exports.Mom = db.model('mom', Mom);
+//var Mom = new mongoose.Schema({
+//  id:    { type: Number },
+//  group: { type: Number },
+//  num:   { type: Number },
+//});
+//exports.Mom = db.model('mom', Mom);

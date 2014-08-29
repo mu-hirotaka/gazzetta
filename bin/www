@@ -28,11 +28,13 @@ var groupId = 1;
 var playersMaster;
 var ratingSumKeys = [];
 var ratingNumKeys = [];
+var momKeys = [];
 Player.find({ group: groupId }).sort('id').exec(function(err, players) {
   playersMaster = players;
   us.each(players, function(item) {
     ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
     ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
+    momKeys.push('mom:' + groupId + ':' + item.id);
   });
 });
 
@@ -62,13 +64,12 @@ io.on('connection', function(socket) {
 function emitBaseInfo(socket) {
   client.multi([
     ["mget"].concat(ratingSumKeys),
-    ["mget"].concat(ratingNumKeys)
+    ["mget"].concat(ratingNumKeys),
+    ["mget"].concat(momKeys)
   ]).exec(function (err, replies) {
     Opinion.find({ group: groupId }).exec(function(err, opinions) {
       Summary.find({ group: groupId }).exec(function(err, summaries) {
-        Mom.find({ group: groupId }).exec(function(err, moms) {
-          socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
-        });
+        socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: replies[2], group: groupId });
       });
     });
   });
@@ -77,13 +78,12 @@ function emitBaseInfo(socket) {
 function broadcastBaseInfo() {
   client.multi([
     ["mget"].concat(ratingSumKeys),
-    ["mget"].concat(ratingNumKeys)
+    ["mget"].concat(ratingNumKeys),
+    ["mget"].concat(momKeys)
   ]).exec(function (err, replies) {
     Opinion.find({ group: groupId }).sort('-createdAt').exec(function(err, opinions) {
       Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
-        Mom.find({ group: groupId }).exec(function(err, moms) {
-          io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
-        });
+        io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: replies[2], group: groupId });
       });
     });
   });
@@ -127,17 +127,10 @@ function insertSummaryComment(data) {
 }
 
 function updateMom(data) {
-  Mom.findOne({ id: data.id }, function(err, mom) {
-    if (mom === null) {
-      var newRecord = new Mom({id: data.id, num: 1, group: data.group});
-      newRecord.save(function(err) {
-
-      });
-    } else {
-      mom.num = mom.num + 1;
-      mom.save();
-    }
-  });
+  var id = data.id;
+  var gid = data.group;
+  var momKey = 'mom:' + gid + ':' + id;
+  client.incr(momKey);
 }
 
 function getUnixTime() {
