@@ -17,7 +17,7 @@ $(function() {
           + '<div class="col-xs-3">'
             + '<div class="text-center">'
               + '<div id="player-img-' + item.id + '"></div>'
-              + '<div class="player-name">' + item.name + '</div>'
+              + '<div class="player-name">' + item.shortName + '</div>'
             + '</div>'
           + '</div>'
           + '<div class="col-xs-9">'
@@ -76,7 +76,7 @@ $(function() {
       $('#mom').hide();
     } else {
       _.each(players, function(item) {
-        $('#mom-select').append('<option value="' + item.id + '">' + item.name + '</option>');
+        $('#mom-select').append('<option value="' + item.id + '">' + item.fullName + '</option>');
       });
 
       $('#mom-btn').on('click', function() {
@@ -136,7 +136,9 @@ $(function() {
           }
         }
       }
-      $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].name + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
+      console.log(item.id);
+      console.log(playersMap[item.id]);
+      $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].shortName + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
 /*
@@ -167,7 +169,7 @@ $(function() {
     _.each(sortedMoms, function(item) {
       var name = '該当者なし';
       if (item.id > 0) {
-        name = playersMap[item.id].name;
+        name = playersMap[item.id].shortName;
       }
       segments.push({ label: name, color: CHART_COLOR[index], value: item.num });
       index++;
@@ -186,7 +188,7 @@ $(function() {
     var $opinion = $('#player-opinion');
     $opinion.empty();
     _.each(playersMap, function(val, key, list) {
-      $opinion.append('<h3>' + val.name + '</h3>');
+      $opinion.append('<h3>' + val.fullName + '</h3>');
       $opinion.append('<ul id="player-comment-' + val.id + '"></ul>');
       commentCount[val.id] = 0;
     });

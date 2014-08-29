@@ -32,9 +32,10 @@ router.get('/create_player', function(req, res) {
 router.post('/create_player_done', function(req, res) {
   var id = parseInt(req.body.id);
   var group = parseInt(req.body.group);
-  var name = req.body.name;
-  var imagePath = req.body.imagePath;
-  var player = new Player({id: id, group: group, name: name, imagePath: imagePath});
+  var fullName = req.body.fullName;
+  var shortName = req.body.shortName;
+  var valid = req.body.valid == 1 ? true : false;
+  var player = new Player({ id: id, group: group, fullName: fullName, shortName: shortName, valid: valid });
   player.save(function(err) {
     console.log(err);
   });

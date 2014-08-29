@@ -3,10 +3,11 @@ var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://localhost/gazzetta');
 
 var Player = new mongoose.Schema({
-  id:        { type: Number },
-  group:     { type: Number },
-  name:      { type: String },
-  imagePath: { type: String }
+  id:        { type: Number  },
+  group:     { type: Number  },
+  fullName:  { type: String  },
+  shortName: { type: String  },
+  valid:     { type: Boolean }
 });
 
 exports.Player = db.model('player', Player);
