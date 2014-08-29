@@ -156,7 +156,7 @@ $(function() {
     var segments = [];
     var CHART_COLOR = ['#aaf2fb', '#ffb6b9', '#ffe361', '#fbaa6e', '#A8BECB'];
     _.each(sortedMoms, function(item, index) {
-      segments.push({ label: item.shortName, color: CHART_COLOR[index], value: item.momNum });
+      segments.push({ label: item.shortName, color: CHART_COLOR[index], value: parseInt(item.momNum) });
     });
     var options = {
       legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\">&nbsp;&nbsp;&nbsp;</span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
