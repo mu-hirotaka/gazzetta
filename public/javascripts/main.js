@@ -111,6 +111,7 @@ $(function() {
       playersMap[item.id].ratingSum = data.ratings.sum[index];
       playersMap[item.id].ratingNum = data.ratings.num[index];
       playersMap[item.id].momNum = data.moms[index];
+      playersMap[item.id].comments = data.opinions[item.id];
     });
 
     var $table = $('#user-rating');
@@ -167,21 +168,19 @@ $(function() {
     $("#mom-chart").css({'width':'150', 'height':'150'});
     $("#mom-legend").html(momChart.generateLegend());
 
+    var filteredForComment = _.filter(playersMap, function(item) {
+      return item.comments.length > 0;
+    });
 
-    var commentCount = {};
     var $opinion = $('#player-opinion');
     $opinion.empty();
-    _.each(playersMap, function(val, key, list) {
-      $opinion.append('<h3>' + val.fullName + '</h3>');
-      $opinion.append('<ul id="player-comment-' + val.id + '"></ul>');
-      commentCount[val.id] = 0;
-    });
-    _.each(data.opinions, function(item) {
-      if ( VISIBLE_LI_NUM > commentCount[item.id] ) {
-        var $comment = $('#player-comment-' + item.id);
-        $comment.append('<li><div class="bs-callout bs-callout-info">' + item.opinion + '</div></li>');
-      }
-      commentCount[item.id]++;
+    _.each(filteredForComment, function(item) {
+      $opinion.append('<h3>' + item.fullName + '</h3>');
+      $opinion.append('<ul id="player-comment-' + item.id + '"></ul>');
+      var $comment = $('#player-comment-' + item.id);
+      _.each(item.comments, function(comment) {
+        $comment.append('<li><div class="bs-callout bs-callout-info">' + comment + '</div></li>');
+      });
     });
 
     $opinion.append('<h3>総評</h3><ul id="summaries"></ul>');

@@ -20,14 +20,13 @@ exports.Player = db.model('player', Player);
 //});
 //exports.Rating = db.model('rating', Rating);
 
-var Opinion = new mongoose.Schema({
-  id:        { type: Number },
-  group:     { type: Number },
-  opinion:   { type: String },
-  createdAt: { type: Number }
-});
-
-exports.Opinion = db.model('opinion', Opinion);
+//var Opinion = new mongoose.Schema({
+//  id:        { type: Number },
+//  group:     { type: Number },
+//  opinion:   { type: String },
+//  createdAt: { type: Number }
+//});
+//exports.Opinion = db.model('opinion', Opinion);
 
 var Summary = new mongoose.Schema({
   group:     { type: Number },

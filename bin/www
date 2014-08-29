@@ -20,7 +20,6 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 });
 
 var Player = model.Player;
-var Opinion = model.Opinion;
 var Summary = model.Summary;
 var Mom = model.Mom;
 
@@ -29,12 +28,17 @@ var playersMaster;
 var ratingSumKeys = [];
 var ratingNumKeys = [];
 var momKeys = [];
+var commentKeys = [];
+var comments = {};
 Player.find({ group: groupId }).sort('id').exec(function(err, players) {
   playersMaster = players;
   us.each(players, function(item) {
     ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
     ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
     momKeys.push('mom:' + groupId + ':' + item.id);
+    client.lrange('comment:' + groupId + ':' + item.id, 0, 2 ,function(err, val) {
+      comments[item.id] = val;
+    });
   });
 });
 
@@ -67,10 +71,8 @@ function emitBaseInfo(socket) {
     ["mget"].concat(ratingNumKeys),
     ["mget"].concat(momKeys)
   ]).exec(function (err, replies) {
-    Opinion.find({ group: groupId }).exec(function(err, opinions) {
-      Summary.find({ group: groupId }).exec(function(err, summaries) {
-        socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: replies[2], group: groupId });
-      });
+    Summary.find({ group: groupId }).exec(function(err, summaries) {
+      socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: summaries, moms: replies[2], group: groupId });
     });
   });
 }
@@ -81,10 +83,8 @@ function broadcastBaseInfo() {
     ["mget"].concat(ratingNumKeys),
     ["mget"].concat(momKeys)
   ]).exec(function (err, replies) {
-    Opinion.find({ group: groupId }).sort('-createdAt').exec(function(err, opinions) {
-      Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
-        io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: replies[2], group: groupId });
-      });
+    Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
+      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: summaries, moms: replies[2], group: groupId });
     });
   });
 }
@@ -108,9 +108,10 @@ function updateRating(data) {
   });
 
   if (opinion.length > 0) {
-    var newOpinion = new Opinion({ id: id, group: groupId, opinion: opinion, createdAt: getUnixTime() });
-    newOpinion.save(function(err) {
-
+    var commentKey = "comment:" + gid + ':' + id;
+    client.lpush(commentKey, opinion);
+    client.lrange(commentKey, 0, 2 ,function(err, val) {
+      comments[id] = val;
     });
   }
 }
