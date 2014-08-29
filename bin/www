@@ -20,7 +20,6 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 });
 
 var Player = model.Player;
-var Mom = model.Mom;
 
 var groupId = 1;
 var playersMaster;
