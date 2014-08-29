@@ -16,7 +16,8 @@
     "forever": "~0.11.1",
     "mongoose": "~3.8.14",
     "ejs": "~0.8.5",
-    "pm2": "~0.10.3"
+    "pm2": "~0.10.3",
+    "redis": "~0.12.1"
   },
   "devDependencies": {
     "socket.io": "~1.0.6",
