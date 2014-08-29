@@ -10,7 +10,12 @@
     <div class="container">
       <ul>
         <% for (var i=0; i < players.length; i++) { %>
-          <%= players[i].fullName %>
+          <form action="/debug/player" method="POST">
+            <%= players[i].fullName %>
+            <input type="hidden" name="gid" value="<%= gid %>"> 
+            <input type="hidden" name="id" value="<%= players[i].id %>"> 
+            <input type="submit" value="更新">
+          </form>
           <form action="/debug/delete_player" method="POST">
             <input type="hidden" name="id" value="<%= players[i].id %>"> 
             <input type="submit" value="削除">

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>debug</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <ul>
+        <%= player.fullName %>
+        <form action="/debug/update_player" method="POST">
+          <p>ID:<input type="text" name="id" value="<%= player.id %>"></p>
+          <p>group:<input type="text" name="gid" value="<%= player.group %>"></p>
+          <p>Full Name:<input type="text" name="fullName" value="<%= player.fullName %>"></p>
+          <p>Short Name:<input type="text" name="shortName" value="<%= player.shortName %>"></p>
+          <p>valid:
+            <select name="valid">
+              <% if (player.valid) { %>
+                <option value="1" selected>有効</option>
+                <option value="0">無効</option>
+              <% } else { %>
+                <option value="1">有効</option>
+                <option value="0" selected>無効</option>
+              <% } %>
+            </select>
+          </p>
+          <input type="submit" value="更新">
+        </form>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </body>
+</html>

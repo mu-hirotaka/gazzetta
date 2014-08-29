@@ -10,8 +10,24 @@ router.get('/', function(req, res) {
 
 router.get('/players', function(req, res) {
   Player.find({}, function(err, players) {
-    res.render('debug/players', { players: players });
+    res.render('debug/players', { players: players, gid: 1 });
   });
+});
+
+router.post('/player', function(req, res) {
+  Player.findOne({id:parseInt(req.body.id), group: parseInt(req.body.gid)}, function(err, player){
+    res.render('debug/player', { player: player });
+  });
+});
+
+router.post('/update_player', function(req, res) {
+  Player.findOne({id:parseInt(req.body.id), group: parseInt(req.body.gid)}, function(err, player){
+    player.fullName = req.body.fullName;
+    player.shortName = req.body.shortName;
+    player.valid = parseInt(req.body.valid) ? true : false;
+    player.save();
+  });
+  res.redirect('/debug/players');
 });
 
 router.post('/delete_player', function(req, res) {
