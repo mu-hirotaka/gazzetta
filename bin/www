@@ -3,6 +3,9 @@ var debug = require('debug')('gazzetta');
 var app = require('../app');
 var config = require('../config.js');
 var model = require('../models.js');
+var us = require('underscore')._;
+var redis = require('redis'),
+    client = redis.createClient();
 
 if (app.get('env') === 'production') {
 //  app.set('host', config.production.host);
@@ -17,16 +20,20 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 });
 
 var Player = model.Player;
-var Rating = model.Rating;
 var Opinion = model.Opinion;
 var Summary = model.Summary;
 var Mom = model.Mom;
 
-
 var groupId = 1;
 var playersMaster;
+var ratingSumKeys = [];
+var ratingNumKeys = [];
 Player.find({ group: groupId }).sort('id').exec(function(err, players) {
   playersMaster = players;
+  us.each(players, function(item) {
+    ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
+    ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
+  });
 });
 
 var io = require('socket.io')(server);
@@ -53,11 +60,14 @@ io.on('connection', function(socket) {
 });
 
 function emitBaseInfo(socket) {
-  Rating.find({ group: groupId }).exec(function(err, ratings) {
+  client.multi([
+    ["mget"].concat(ratingSumKeys),
+    ["mget"].concat(ratingNumKeys)
+  ]).exec(function (err, replies) {
     Opinion.find({ group: groupId }).exec(function(err, opinions) {
       Summary.find({ group: groupId }).exec(function(err, summaries) {
         Mom.find({ group: groupId }).exec(function(err, moms) {
-          socket.emit('login', { players: playersMaster, ratings: ratings, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
+          socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
         });
       });
     });
@@ -65,11 +75,14 @@ function emitBaseInfo(socket) {
 }
 
 function broadcastBaseInfo() {
-  Rating.find({ group: groupId }).exec(function(err, ratings) {
+  client.multi([
+    ["mget"].concat(ratingSumKeys),
+    ["mget"].concat(ratingNumKeys)
+  ]).exec(function (err, replies) {
     Opinion.find({ group: groupId }).sort('-createdAt').exec(function(err, opinions) {
       Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
         Mom.find({ group: groupId }).exec(function(err, moms) {
-          io.sockets.emit('broadcast results', { players: playersMaster, ratings: ratings, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
+          io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: opinions, summaries: summaries, moms: moms, group: groupId });
         });
       });
     });
@@ -78,26 +91,28 @@ function broadcastBaseInfo() {
 
 function updateRating(data) {
   var id = data.id;
+  var gid = data.group;
   var formatedRating = parseFloat(data.rating);
   var opinion = data.opinion;
-  Rating.findOne({ id: data.id }, function(err, rating) {
-    if (rating === null) {
-      var newRecord = new Rating({ id: id, group: groupId, sum: formatedRating, num: 1 });
-      newRecord.save(function(err) {
+  var ratingNumKey = 'ratingNum:' + gid + ':' + id;
+  var ratingSumKey = 'ratingSum:' + gid + ':' + id;
 
-      });
-    } else {
-      rating.num = rating.num + 1;
-      rating.sum = rating.sum + formatedRating;
-      rating.save();
+  client.get(ratingSumKey, function(err, val) {
+    if (val) {
+      client.set(ratingSumKey, parseFloat(val) + formatedRating);
     }
-    if (opinion.length > 0) {
-      var newOpinion = new Opinion({ id: id, group: groupId, opinion: opinion, createdAt: getUnixTime() });
-      newOpinion.save(function(err) {
-
-      });
+    else {
+      client.set(ratingSumKey, formatedRating);
     }
+    client.incr(ratingNumKey);
   });
+
+  if (opinion.length > 0) {
+    var newOpinion = new Opinion({ id: id, group: groupId, opinion: opinion, createdAt: getUnixTime() });
+    newOpinion.save(function(err) {
+
+    });
+  }
 }
 
 function insertSummaryComment(data) {

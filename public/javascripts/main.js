@@ -106,8 +106,10 @@ $(function() {
 
   function updateCommentView(data) {
     var playersMap = {};
-    _.each(data.players, function(item) {
+    _.each(data.players, function(item, index) {
       playersMap[item.id] = item;
+      playersMap[item.id].ratingSum = data.ratings.sum[index];
+      playersMap[item.id].ratingNum = data.ratings.num[index];
     });
 
     var $table = $('#user-rating');
@@ -115,12 +117,15 @@ $(function() {
     $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
     var $tbody = $('#user-rating > tbody');
 
-    var sortedRatings = _.sortBy(data.ratings, function(item) {
-      return - item.sum / item.num;
+    var filtered = _.filter(playersMap, function(item) {
+      return item.ratingSum > 0;
+    });
+    var sortedRatings = _.sortBy(filtered, function(item) {
+      return - item.ratingSum / item.ratingNum;
     });
     var rank = 1;
     _.each(sortedRatings, function(item) {
-      var avg = (item.sum / item.num).toFixed(1);
+      var avg = (item.ratingSum / item.ratingNum).toFixed(1);
       var myRating = localStorage.getItem('player-id' + item.id);
       var myRatingStr = '評価なし';
       if (myRating) {
@@ -136,27 +141,9 @@ $(function() {
           }
         }
       }
-      $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].shortName + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
+      $tbody.append('<tr><td>' + rank + '</td><td>' + item.shortName + '</td><td>' + avg + '</td><td>' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
-/*
-    var $momTable = $('#user-mom');
-    $momTable.empty();
-    $momTable.append('<thead><tr><th>順位</th><th>Name</th><th>MoM獲得数</th></tr></thead><tbody></tbody>');
-    var $momTbody = $('#user-mom > tbody');
-    var sortedMoms = _.sortBy(data.moms, function(item) {
-      return - item.num;
-    });
-    rank = 1;
-    _.each(sortedMoms, function(item) {
-      var name = '該当者なし';
-      if (item.id > 0) {
-        name = playersMap[item.id].name;
-      }
-      $momTbody.append('<tr><td>' + rank + '</td><td>' + name + '</td><td>' + item.num + '</td></tr>');
-      rank++;
-    });
-    */
 
     var sortedMoms = _.sortBy(data.moms, function(item) {
       return - item.num;
