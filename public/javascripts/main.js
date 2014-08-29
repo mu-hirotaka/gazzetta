@@ -136,8 +136,6 @@ $(function() {
           }
         }
       }
-      console.log(item.id);
-      console.log(playersMap[item.id]);
       $tbody.append('<tr><td>' + rank + '</td><td>' + playersMap[item.id].shortName + '</td><td>' + avg + '</td><td>' + item.num + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
