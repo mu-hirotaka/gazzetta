@@ -20,7 +20,6 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 });
 
 var Player = model.Player;
-var Summary = model.Summary;
 var Mom = model.Mom;
 
 var groupId = 1;
@@ -28,8 +27,9 @@ var playersMaster;
 var ratingSumKeys = [];
 var ratingNumKeys = [];
 var momKeys = [];
-var commentKeys = [];
 var comments = {};
+var summaryKey = "summary:" + groupId;
+
 Player.find({ group: groupId }).sort('id').exec(function(err, players) {
   playersMaster = players;
   us.each(players, function(item) {
@@ -69,11 +69,10 @@ function emitBaseInfo(socket) {
   client.multi([
     ["mget"].concat(ratingSumKeys),
     ["mget"].concat(ratingNumKeys),
-    ["mget"].concat(momKeys)
+    ["mget"].concat(momKeys),
+    ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
-    Summary.find({ group: groupId }).exec(function(err, summaries) {
-      socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: summaries, moms: replies[2], group: groupId });
-    });
+    socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
   });
 }
 
@@ -81,11 +80,10 @@ function broadcastBaseInfo() {
   client.multi([
     ["mget"].concat(ratingSumKeys),
     ["mget"].concat(ratingNumKeys),
-    ["mget"].concat(momKeys)
+    ["mget"].concat(momKeys),
+    ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
-    Summary.find({ group: groupId }).sort('-createdAt').exec(function(err, summaries) {
-      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: summaries, moms: replies[2], group: groupId });
-    });
+    io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
   });
 }
 
@@ -118,12 +116,9 @@ function updateRating(data) {
 
 function insertSummaryComment(data) {
   var comment = data.comment;
-  var group = data.group;
+  var gid = data.group;
   if (comment.length > 0) {
-    var newSummary = new Summary({ group: group, comment: comment, createdAt: getUnixTime() });
-    newSummary.save(function(err) {
-
-    });
+    client.lpush(summaryKey, comment);
   }
 }
 

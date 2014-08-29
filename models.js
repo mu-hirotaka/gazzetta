@@ -9,7 +9,6 @@ var Player = new mongoose.Schema({
   shortName: { type: String  },
   valid:     { type: Boolean }
 });
-
 exports.Player = db.model('player', Player);
 
 //var Rating = new mongoose.Schema({
@@ -28,13 +27,12 @@ exports.Player = db.model('player', Player);
 //});
 //exports.Opinion = db.model('opinion', Opinion);
 
-var Summary = new mongoose.Schema({
-  group:     { type: Number },
-  comment:   { type: String },
-  createdAt: { type: Number }
-});
-
-exports.Summary = db.model('summary', Summary);
+//var Summary = new mongoose.Schema({
+//  group:     { type: Number },
+//  comment:   { type: String },
+//  createdAt: { type: Number }
+//});
+//exports.Summary = db.model('summary', Summary);
 
 //var Mom = new mongoose.Schema({
 //  id:    { type: Number },

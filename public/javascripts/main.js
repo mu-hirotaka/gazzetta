@@ -1,5 +1,4 @@
 $(function() {
-  var VISIBLE_LI_NUM = 3;
   var socket = io.connect($('#uri').data('uri'));
 
   function init(data) {
@@ -185,12 +184,8 @@ $(function() {
 
     $opinion.append('<h3>総評</h3><ul id="summaries"></ul>');
     var $summary = $('#summaries');
-    var summaryCount = 0;
     _.each(data.summaries, function(item) {
-      if (VISIBLE_LI_NUM > summaryCount) {
-        $summary.append('<li><div class="bs-callout bs-callout-info">' + item.comment + '</div></li>');
-      }
-      summaryCount++;
+      $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');
     });
   }
 
