@@ -1,7 +1,7 @@
 Gazzetta
 ======================
 
-Installation
+Installation(exp. Amazon Linux AMI 2014.03.2 (HVM) - ami-29dc9228)
 ------
 ### nodejs install
 ```
@@ -32,16 +32,11 @@ $ sudo service mongod start
 ```
 ### gazzetta install
 ```
-# 3000番ポートあける
 $ export NODE_ENV=production
 $ echo "export NODE_ENV=production" >> ~/.bash_profile
 $ git clone https://github.com/mu-hirotaka/gazzetta.git
 $ cd gazzetta
 $ npm install
-$ bin/www
-# ここまでで一旦アクセスできるか確認
-# http://xxx.xxx.xxx.xxx:3000/ 
-# 確認したら一旦Ctrl-c で終了
 ```
 
 ### pm2 install
@@ -52,7 +47,7 @@ $ pm2 start bin/www
 
 ### nginx(reverse proxy) install
 ```
-# 80番ポートあける
+# 80番ポートあいてなければあける
 $ sudo rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
 $ sudo yum -y install nginx
 $ sudo chkconfig nginx on
