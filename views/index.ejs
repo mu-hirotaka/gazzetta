@@ -32,7 +32,9 @@
       <div id="mom-legend"></div>
       <div id="player-opinion">
       </div>
-      <div><a href="/debug">debug</a></div>
+      <% if (env === 'development') { %>
+        <div><a href="/debug">debug</a></div>
+      <% } %>
     </div>
     <div id='uri' data-uri="<%= uri %>"></div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
