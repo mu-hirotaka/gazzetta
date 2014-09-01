@@ -6,7 +6,7 @@ var config = require('../config');
 router.get('/', function(req, res) {
   var uri = '';
   if (process.env.NODE_ENV === 'production') {
-    uri = 'http://' + config.production.host + ':' + config.production.port + '/';
+    uri = config.production.uri;
   } else {
     uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
   }

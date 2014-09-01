@@ -22,24 +22,9 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 var Player = model.Player;
 
 var groupId = 1;
-var playersMaster;
-var ratingSumKeys = [];
-var ratingNumKeys = [];
-var momKeys = [];
-var comments = {};
-var summaryKey = "summary:" + groupId;
+var playersMaster, ratingSumKeys, ratingNumKeys, momKeys, comments, summaryKey;
 
-Player.find({ group: groupId }).sort('id').exec(function(err, players) {
-  playersMaster = players;
-  us.each(players, function(item) {
-    ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
-    ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
-    momKeys.push('mom:' + groupId + ':' + item.id);
-    client.lrange('comment:' + groupId + ':' + item.id, 0, 2 ,function(err, val) {
-      comments[item.id] = val;
-    });
-  });
-});
+setLocalCache();
 
 var io = require('socket.io')(server);
 
@@ -62,7 +47,34 @@ io.on('connection', function(socket) {
     broadcastBaseInfo();
   });
 
+  socket.on('set local cache', function(data) {
+    setLocalCache();
+  });
 });
+
+function initLocalCache() {
+  playersMaster = [];
+  ratingSumKeys = [];
+  ratingNumKeys = [];
+  momKeys = [];
+  comments = {};
+  summaryKey = "summary:" + groupId;
+}
+
+function setLocalCache() {
+  initLocalCache();
+  Player.find({ group: groupId, valid: true }).sort('id').exec(function(err, players) {
+    playersMaster = players;
+    us.each(players, function(item) {
+      ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
+      ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
+      momKeys.push('mom:' + groupId + ':' + item.id);
+      client.lrange('comment:' + groupId + ':' + item.id, 0, 2 ,function(err, val) {
+        comments[item.id] = val;
+      });
+    });
+  });
+}
 
 function emitBaseInfo(socket) {
   client.multi([
@@ -129,6 +141,6 @@ function updateMom(data) {
 }
 
 function getUnixTime() {
-   return parseInt((new Date)/1000);
+  return parseInt((new Date)/1000);
 }
 

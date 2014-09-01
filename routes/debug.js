@@ -1,11 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var config = require('../config');
 var model = require('../models.js');
 
 var Player = model.Player;
 
 router.get('/', function(req, res) {
-  res.render('debug/index', {});
+  var uri = '';
+  if (process.env.NODE_ENV === 'production') {
+    uri = config.production.uri;
+  } else {
+    uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
+  }
+  res.render('debug/index', { title: '国民総ガゼッタ(仮)', uri: uri });
 });
 
 router.get('/players', function(req, res) {
