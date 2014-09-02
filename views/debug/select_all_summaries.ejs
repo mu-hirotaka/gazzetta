@@ -8,26 +8,16 @@
   </head>
   <body>
     <div class="container">
+      <p><a href="/">Home</a></p>
+      <p><a href="/debug">debug</a></p>
       <ul>
-        <li><a href="/debug/players">player list</a></li>
-        <li><a href="/debug/create_player">create player</a></li>
-        <li><a href="/debug/localstrage_clear">localStrage cache clear</a></li>
-        <li><button id="set-local-cache">set local cache</button></li>
-        <li><a href="/debug/select_all_summaries">全総評を見る</a></li>
-        <li><a href="/">back</a></li>
+        <% for (var i = 0; i < summaries.length; i++) { %>
+          <li><%= summaries[i] %></li>
+        <% } %>
       </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      $(function() {
-        var socket = io.connect('<%= uri %>');
-        $('#set-local-cache').on('click', function() {
-          socket.emit('set local cache', {});
-        });
-      });
-    </script>
   </body>
 </html>

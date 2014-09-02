@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var config = require('../config');
 var model = require('../models.js');
+var redis = require('redis'),
+    client = redis.createClient();
 
 var Player = model.Player;
 
@@ -63,6 +65,12 @@ router.post('/create_player_done', function(req, res) {
     console.log(err);
   });
   res.redirect('/');
+});
+
+router.get('/select_all_summaries', function(req, res) {
+  client.lrange("summary:1", 0, 1000 ,function(err, summaries) {
+    res.render('debug/select_all_summaries', { summaries: summaries });
+  });
 });
 
 module.exports = router;
