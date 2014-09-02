@@ -204,3 +204,9 @@ ul.doughnut-legend > li {
   margin-right: 5px;
 }
 
+footer {
+  background-color: #ffd900;
+  text-align: center;
+  font-size: 11px;
+  margin-top: 5px;
+}
