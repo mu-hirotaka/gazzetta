@@ -85,7 +85,15 @@ server {
     }
 }
 
-# 必要に応じてnginxのユーザーを変更する(vim /etc/nginx/nginx.conf)
+# 必要に応じてnginxのユーザーを変更する
+# ec2-userにする場合の例
+# sudo vim /etc/nginx/nginx.conf
+# user  ec2-user;
+# $ chown -R ec2-user:ec2-user /var/lib/nginx
+
 $ sudo service nginx restart
+
 # http://xxx.xxx.xxx/ で接続確認
+# クライアントのブラウザのconsoleログにエラーがでてないこと確認
+# サーバーのエラーログがでてないとこ確認(/var/log/nginx/gazzetta_error.log)
 ```
