@@ -67,7 +67,7 @@ server {
     error_log /var/log/nginx/gazzetta_error.log;
 
     location / {
-        try_files $uri $uri/ @app;
+        try_files $uri @app;
     }
 
     location /socket.io/ {
