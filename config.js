@@ -1,7 +1,7 @@
 exports.production = {
-  host: '54.92.114.30',
+  host: '',
   port: 3000,
-  uri: 'http://www.mu-football.xyz/'
+  uri: 'http://xxx.xxx.xxx/'
 };
 
 exports.dev = {

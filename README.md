@@ -37,6 +37,7 @@ $ echo "export NODE_ENV=production" >> ~/.bash_profile
 $ git clone https://github.com/mu-hirotaka/gazzetta.git
 $ cd gazzetta
 $ npm install
+$ vim config.js # productionのuriを正式なものに置き換える
 ```
 
 ### pm2 install
@@ -84,7 +85,7 @@ server {
     }
 }
 
+# 必要に応じてnginxのユーザーを変更する(vim /etc/nginx/nginx.conf)
 $ sudo service nginx restart
 # http://xxx.xxx.xxx/ で接続確認
 ```
-
