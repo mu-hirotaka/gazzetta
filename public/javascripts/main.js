@@ -142,7 +142,7 @@ $(function() {
           }
         }
       }
-      $tbody.append('<tr><td>' + rank + '</td><td>' + item.shortName + '</td><td>' + avg + '</td><td>' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
+      $tbody.append('<tr><td style="text-align: left;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: left;">' + avg + '</td><td style="text-align: left;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
 
