@@ -10,7 +10,7 @@ body {
 
 .sk-title {
   height: 50px;
-  background-color: #ffd900;
+  background-color: #ffee00;
   background-image: url('/images/logo.png');
   background-size: auto 44px;
   background-repeat: no-repeat;
@@ -69,7 +69,7 @@ ul#player-list {
 .player-btn {
   margin-left: 10px;
   margin-top: 5px;
-  background-color: #ffd900;
+  background-color: #ffee00;
   border-color: #ffea00;
   color: #000;
   font-weight: bold;
@@ -81,7 +81,7 @@ ul#player-list {
 }
 
 #summary > p {
-  background-color: #ffd900;
+  background-color: #ffee00;
   color: #000;
   font-weight: bold;
   padding: 4px;
@@ -91,14 +91,14 @@ ul#player-list {
 #summary > textarea {
   width: 100%;
   resize: none;
-  border-left: 5px solid #ffd900;
-  border-right: 5px solid #ffd900;
-  border-bottom: 5px solid #ffd900;
+  border-left: 5px solid #ffee00;
+  border-right: 5px solid #ffee00;
+  border-bottom: 5px solid #ffee00;
   border-top: none;
 }
 
 #summary > button {
-  background-color: #ffd900;
+  background-color: #ffee00;
   border: 2px solid #333;
   color: #000;
   font-weight: bold;
@@ -109,9 +109,9 @@ ul#player-list {
   text-align: center;
   padding-bottom: 5px;
   margin-bottom: 5px;
-  border-left: 5px solid #ffd900;
-  border-right: 5px solid #ffd900;
-  border-bottom: 5px solid #ffd900;
+  border-left: 5px solid #ffee00;
+  border-right: 5px solid #ffee00;
+  border-bottom: 5px solid #ffee00;
   border-top: none;
 }
 
@@ -120,7 +120,7 @@ ul#player-list {
 }
 
 #mom > p {
-  background-color: #ffd900;
+  background-color: #ffee00;
   color: #000;
   font-weight: bold;
   padding: 4px;
@@ -130,7 +130,7 @@ ul#player-list {
 #mom-btn {
   margin-left: 10px;
   margin-top: 5px;
-  background-color: #ffd900;
+  background-color: #ffee00;
   border: 2px solid #333;
   color: #000;
   font-weight: bold;
@@ -159,7 +159,7 @@ span.minus {
 }
 
 span.zero {
-  color: #ffd900;
+  color: #ffee00;
 }
 
 .bs-callout {
@@ -172,7 +172,7 @@ span.zero {
 }
 
 .bs-callout-info {
-  border-left-color: #ffd900;
+  border-left-color: #ffee00;
 }
 
 #mom-legend {
@@ -215,7 +215,7 @@ ul.doughnut-legend > li {
 }
 
 footer {
-  background-color: #ffd900;
+  background-color: #ffee00;
   text-align: center;
   font-size: 11px;
   margin-top: 5px;
