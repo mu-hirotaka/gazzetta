@@ -7,10 +7,10 @@ router.get('/', function(req, res) {
   var uri = '';
   if (process.env.NODE_ENV === 'production') {
     uri = config.production.uri;
-    res.render('index', { title: '国民総ガゼッタ(仮)', uri: uri, env: 'production'});
+    res.render('index', { title: '俺ガゼッタ', uri: uri, env: 'production'});
   } else {
     uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
-    res.render('index', { title: '国民総ガゼッタ(仮)', uri: uri, env: 'development'});
+    res.render('index', { title: '俺ガゼッタ', uri: uri, env: 'development'});
   }
 });
 

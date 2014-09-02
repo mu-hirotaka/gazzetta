@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
   } else {
     uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
   }
-  res.render('debug/index', { title: '国民総ガゼッタ(仮)', uri: uri });
+  res.render('debug/index', { title: '俺ガゼッタ', uri: uri });
 });
 
 router.get('/players', function(req, res) {
