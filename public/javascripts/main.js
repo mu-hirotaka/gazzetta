@@ -44,7 +44,7 @@ $(function() {
                 + '<option value="1.0">1.0</option>'
                 + '<option value="0">評価なし</option>'
               + '</select>'
-              + '<button type="button" class="btn btn-sm player-btn" data-player-id="' + item.id + '">送信</button>'
+              + '<button type="button" class="btn btn-sm player-btn" data-player-id="' + item.id + '">確定</button>'
             + '</div>'
           + '</div>'
         + '</div>'
@@ -115,7 +115,7 @@ $(function() {
 
     var $table = $('#user-rating');
     $table.empty();
-    $table.append('<thead><tr><th>順位</th><th>Name</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
+    $table.append('<thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
     var $tbody = $('#user-rating > tbody');
 
     var filteredForRating = _.filter(playersMap, function(item) {
@@ -173,6 +173,7 @@ $(function() {
 
     var $opinion = $('#player-opinion');
     $opinion.empty();
+    $opinion.append('<h3>みんなのコメント(最新3件)</h3>');
     _.each(filteredForComment, function(item) {
       $opinion.append('<h3>' + item.fullName + '</h3>');
       $opinion.append('<ul id="player-comment-' + item.id + '"></ul>');
@@ -182,7 +183,7 @@ $(function() {
       });
     });
 
-    $opinion.append('<h3>総評</h3><ul id="summaries"></ul>');
+    $opinion.append('<h3>みんなの総評(最新3件)</h3><ul id="summaries"></ul>');
     var $summary = $('#summaries');
     _.each(data.summaries, function(item) {
       $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');

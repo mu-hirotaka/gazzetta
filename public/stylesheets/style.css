@@ -8,9 +8,19 @@ body {
   padding-right: 0px;
 }
 
-.my-jumbotron {
+.sk-title {
+  height: 50px;
   background-color: #ffd900;
-  color: #000;
+  background-image: url('/images/logo.png');
+  background-size: auto 44px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.my-jumbotron {
+  background-color: #00002b;
+  color: #fff;
+  border-top: 4px solid #ff3333;
   text-align: center;
   padding-top: 10px;
   padding-bottom: 5px;
