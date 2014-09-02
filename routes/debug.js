@@ -36,14 +36,14 @@ router.post('/update_player', function(req, res) {
     player.valid = parseInt(req.body.valid) ? true : false;
     player.save();
   });
-  res.redirect('/debug/players');
+  res.redirect('/skdebug/players');
 });
 
 router.post('/delete_player', function(req, res) {
   Player.findOne({id:parseInt(req.body.id)}, function(err, player){
     player.remove();
   });
-  res.redirect('/debug/players');
+  res.redirect('/skdebug/players');
 });
 
 router.get('/localstrage_clear', function(req, res) {

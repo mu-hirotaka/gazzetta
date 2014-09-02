@@ -10,7 +10,7 @@
     <div class="container">
       <ul>
         <%= player.fullName %>
-        <form action="/debug/update_player" method="POST">
+        <form action="/skdebug/update_player" method="POST">
           <p>ID:<input type="text" name="id" value="<%= player.id %>"></p>
           <p>group:<input type="text" name="gid" value="<%= player.group %>"></p>
           <p>Full Name:<input type="text" name="fullName" value="<%= player.fullName %>"></p>
@@ -34,6 +34,5 @@
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
   </body>
 </html>
