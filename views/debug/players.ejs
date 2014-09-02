@@ -20,6 +20,11 @@
             <input type="hidden" name="id" value="<%= players[i].id %>"> 
             <input type="submit" value="削除">
           </form>
+          <form action="/debug/player_comment" method="POST">
+            <input type="hidden" name="gid" value="<%= gid %>"> 
+            <input type="hidden" name="id" value="<%= players[i].id %>"> 
+            <input type="submit" value="comment">
+          </form>
         <% } %>
         <li><a href="/">Home</a></li>
       </ul>
