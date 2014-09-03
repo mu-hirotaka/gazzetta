@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var us = require('underscore')._;
 var config = require('../config');
 var model = require('../models.js');
 var redis = require('redis'),
@@ -19,6 +20,9 @@ router.get('/', function(req, res) {
 
 router.get('/players', function(req, res) {
   Player.find({}, function(err, players) {
+    players = us.sortBy(players, function (player) {
+      return player.id;
+    });
     res.render('debug/players', { players: players, gid: 1 });
   });
 });

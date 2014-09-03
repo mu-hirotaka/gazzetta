@@ -8,25 +8,35 @@
   </head>
   <body>
     <div class="container">
-      <ul>
+      <p><a href="/">Home</a></p>
+      <p><a href="/skdebug">debug</a></p>
+      <ul style="padding-left: 30px; padding-right: 10px;">
         <% for (var i=0; i < players.length; i++) { %>
+        <li style="list-style:none;">
+          <div style="float:left;"><%= players[i].id %>:<%= players[i].fullName %></div>
+          <div style="float:left; margin-left: 5px;">
           <form action="/skdebug/player" method="POST">
-            <%= players[i].fullName %>
             <input type="hidden" name="gid" value="<%= gid %>"> 
             <input type="hidden" name="id" value="<%= players[i].id %>"> 
             <input type="submit" value="更新">
           </form>
-          <form action="/skdebug/delete_player" method="POST">
-            <input type="hidden" name="id" value="<%= players[i].id %>"> 
-            <input type="submit" value="削除">
-          </form>
+          </div>
+          <div style="float:left; margin-left: 5px;">
           <form action="/skdebug/player_comment" method="POST">
             <input type="hidden" name="gid" value="<%= gid %>"> 
             <input type="hidden" name="id" value="<%= players[i].id %>"> 
             <input type="submit" value="comment">
           </form>
+          </div>
+          <div style="float:left; margin-left: 5px;">
+          <form action="/skdebug/delete_player" method="POST">
+            <input type="hidden" name="id" value="<%= players[i].id %>"> 
+            <input type="submit" value="削除">
+          </form>
+          </div>
+          <div style="clear: both"></div>
+        </li>
         <% } %>
-        <li><a href="/">Home</a></li>
       </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>

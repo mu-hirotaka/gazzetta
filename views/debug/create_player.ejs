@@ -8,15 +8,17 @@
   </head>
   <body>
     <div class="container">
+      <p><a href="/">Home</a></p>
+      <p><a href="/skdebug">debug</a></p>
       <form action="/skdebug/create_player_done" method="POST">
         <p>ID:<input type="text" name="id"></p>
-        <p>group:<input type="text" name="group"></p>
+        <p>group:<input type="text" name="group" value="1"></p>
         <p>Full Name:<input type="text" name="fullName"></p>
         <p>Short Name:<input type="text" name="shortName"></p>
         <p>valid:
           <select name="valid">
-            <option value="1" selected>有効</option>
-            <option value="0">無効</option>
+            <option value="1">有効</option>
+            <option value="0" selected>無効</option>
           </select>
         </p>
         <input type="submit" value="登録">

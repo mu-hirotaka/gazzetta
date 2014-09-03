@@ -10,11 +10,13 @@
     <div class="container">
       <p><a href="/">Home</a></p>
       <p><a href="/skdebug">debug</a></p>
-      <ul>
-        <% for (var i = 0; i < comments.length; i++) { %>
-          <li><%= comments[i] %></li>
-        <% } %>
-      </ul>
+      <div id="player-opinion">
+        <ul>
+          <% for (var i = 0; i < comments.length; i++) { %>
+            <li><div class="bs-callout bs-callout-info"><%= comments[i] %></div></li>
+          <% } %>
+        </ul>
+      </div>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
