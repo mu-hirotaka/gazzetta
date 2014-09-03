@@ -173,9 +173,9 @@ $(function() {
 
     var $opinion = $('#player-opinion');
     $opinion.empty();
-    $opinion.append('<h3>みんなのコメント(最新3件)</h3>');
+    $opinion.append('<h3>みんなのコメント(各々最新3件)</h3>');
     _.each(filteredForComment, function(item) {
-      $opinion.append('<h3>' + item.fullName + '</h3>');
+      $opinion.append('<h2>' + item.fullName + '</h2>');
       $opinion.append('<ul id="player-comment-' + item.id + '"></ul>');
       var $comment = $('#player-comment-' + item.id);
       _.each(item.comments, function(comment) {
