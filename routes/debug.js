@@ -73,13 +73,13 @@ router.post('/create_player_done', function(req, res) {
 
 router.post('/player_comment', function(req, res) {
     var commentKey = "comment:" + req.body.gid + ':' + req.body.id;
-    client.lrange(commentKey, 0, 1000, function(err, comments) {
+    client.lrange(commentKey, 0, 10000, function(err, comments) {
       res.render('debug/select_comments', { comments: comments });
     });
 });
 
 router.get('/select_all_summaries', function(req, res) {
-  client.lrange("summary:1", 0, 1000 ,function(err, summaries) {
+  client.lrange("summary:1", 0, 10000 ,function(err, summaries) {
     res.render('debug/select_all_summaries', { summaries: summaries });
   });
 });
