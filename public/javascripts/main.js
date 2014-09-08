@@ -6,7 +6,7 @@ $(function() {
     $playerList.empty();
     var players = data.players;
     _.each(players, function(item) {
-      var cache = localStorage.getItem('player-id' + item.id);
+      var cache = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       if (cache) {
         return;
       }
@@ -44,7 +44,7 @@ $(function() {
                 + '<option value="1.0">1.0</option>'
                 + '<option value="0">評価なし</option>'
               + '</select>'
-              + '<button type="button" class="btn btn-sm player-btn" data-player-id="' + item.id + '">確定</button>'
+              + '<button type="button" class="btn btn-sm player-btn" data-player-id="' + item.id + '" data-group-id="' + item.group + '">確定</button>'
             + '</div>'
           + '</div>'
         + '</div>'
@@ -57,9 +57,7 @@ $(function() {
     });
 
     var summaryCache = localStorage.getItem('summary-' + data.group);
-    if (summaryCache) {
-        $('#summary').hide();
-    } else {
+    if (!summaryCache) {
       $('#summary-btn').on('click', function() {
         socket.emit('post summary', {
           comment: $('#summary-comment').val(),
@@ -68,16 +66,14 @@ $(function() {
         $('#summary').fadeOut('normal');
         localStorage.setItem('summary-' + data.group, data.group);
       });
+      $('#summary').show();
     }
 
     var momCache = localStorage.getItem('mom-' + data.group);
-    if (momCache) {
-      $('#mom').hide();
-    } else {
+    if (!momCache) {
       _.each(players, function(item) {
         $('#mom-select').append('<option value="' + item.id + '">' + item.fullName + '</option>');
       });
-
       $('#mom-btn').on('click', function() {
         socket.emit('post mom', {
           id: $('#mom-select').val(),
@@ -86,13 +82,15 @@ $(function() {
         $('#mom').fadeOut('normal');
         localStorage.setItem('mom-' + data.group, data.group);
       });
+      $('#mom').show();
     }
 
     $('.player-btn').on('click', function() {
       var playerId = $(this).data('player-id');
+      var groupId = $(this).data('group-id');
       var rating = $('#player-select-id' + playerId).val();
       var opinion = $('#player-input-id' + playerId).val();
-      localStorage.setItem('player-id' + playerId, rating);
+      localStorage.setItem('player-id:' + groupId + ':' + playerId, rating);
       socket.emit('post rating', {
         id: playerId,
         group: data.group,
@@ -127,7 +125,7 @@ $(function() {
     var rank = 1;
     _.each(sortedRatings, function(item) {
       var avg = (item.ratingSum / item.ratingNum).toFixed(1);
-      var myRating = localStorage.getItem('player-id' + item.id);
+      var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       var myRatingStr = '評価なし';
       if (myRating) {
         myRating = parseFloat(myRating);

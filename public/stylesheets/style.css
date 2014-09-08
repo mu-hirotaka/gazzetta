@@ -75,6 +75,7 @@ ul#player-list {
 
 #summary {
   text-align: center;
+  display: none;
 }
 
 #summary > p {
@@ -110,6 +111,7 @@ ul#player-list {
   border-right: 5px solid #ffee00;
   border-bottom: 5px solid #ffee00;
   border-top: none;
+  display: none;
 }
 
 #mom-select {

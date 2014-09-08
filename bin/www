@@ -21,7 +21,7 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
 
 var Player = model.Player;
 
-var groupId = 1;
+var groupId = 2;
 var playersMaster, ratingSumKeys, ratingNumKeys, momKeys, comments, summaryKey;
 
 setLocalCache();
@@ -83,7 +83,11 @@ function emitBaseInfo(socket) {
     ["mget"].concat(momKeys),
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
-    socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+    if (replies && (replies.length > 3)) {
+      socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+    } else {
+      socket.emit('login', { players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+    }
   });
 }
 
@@ -94,7 +98,11 @@ function broadcastBaseInfo() {
     ["mget"].concat(momKeys),
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
-    io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+    if (replies && (replies.length > 3)) {
+      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+    } else {
+      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+    }
   });
 }
 
