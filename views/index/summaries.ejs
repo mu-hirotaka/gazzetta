@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css?v=8' />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sk-title"><a href="http://www.soccer-king.jp/"><img height="44" src="/images/logo.png" alt="サッカーキング - 世界のサッカー情報サイト"></a></div>
+      <div class="my-jumbotron">
+        <h2><%= title %></h2>
+        <p>ベネズエラ戦を1点〜10点で採点しよう!</p>
+      </div>
+      <div id="player-opinion">
+        <h3>みんなの総評(最新100件)</h3>
+        <% if (summaries && (summaries.length > 0) ) { %>
+          <ul>
+            <% for (var i = 0; i < summaries.length; i++) { %>
+              <li><div class="bs-callout bs-callout-info"><%= summaries[i] %></div></li>
+            <% } %>
+          </ul>
+        <% } else { %>
+          <center>まだ総評は投稿されていません。</center>
+        <% } %>
+      </div>
+      <center><button type="button" id="back-btn" class="btn" onclick="location.href='/'">トップに戻る</button></center>
+    </div>
+  </body>
+</html>

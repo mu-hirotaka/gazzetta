@@ -126,7 +126,7 @@ ul#player-list {
   margin-bottom: 0px;
 }
 
-#mom-btn {
+#mom-btn, #back-btn {
   margin-left: 10px;
   margin-top: 5px;
   background-color: #ffee00;
@@ -230,6 +230,19 @@ ul.doughnut-legend > li {
   padding-bottom: 4px;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+#summary-more {
+  text-align: center;
+}
+
+.more-btn {
+  font-size: 10px;
+  background-color: #ffee00;
+  border: 2px solid #333;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 
 footer {

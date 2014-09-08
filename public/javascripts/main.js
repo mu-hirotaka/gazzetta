@@ -5,6 +5,7 @@ $(function() {
   var $opinion = $('#player-opinion');
   var $table = $('#user-rating > tbody');
   var $summary = $('#summaries');
+  var $summaryMore = $('#summary-more');
   var $momChart = $("#mom-chart");
   var $momLegend = $("#mom-legend");
   var chartCtx = $momChart.get(0).getContext("2d");
@@ -162,7 +163,7 @@ $(function() {
     $momLegend.html(chart.generateLegend());
   }
 
-  function updateCommentView(playersMap) {
+  function updateCommentView(playersMap, groupId) {
     var filtered = _.filter(playersMap, function(item) {
       return item.comments.length > 0;
     });
@@ -175,14 +176,28 @@ $(function() {
       _.each(item.comments, function(comment) {
         $comment.append('<li><div class="bs-callout bs-callout-info">' + comment + '</div></li>');
       });
+      if (item.comments && ( item.comments.length > 0 )) {
+        var uri = '/player_comments?gid=' + groupId + '&id=' + item.id;
+        $opinion.append('<center><div id="player-comment-more-' + item.id + '"><button class="btn more-btn">もっと見る</button></div></center>');
+        $('#player-comment-more-' + item.id + '> button').on('click', function() {
+          location.href = uri;
+        });
+      }
     });
   }
 
-  function updateSummaryView(summaries) {
+  function updateSummaryView(summaries, groupId) {
     $summary.empty();
     _.each(summaries, function(item) {
       $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');
     });
+    if (summaries && summaries.length > 0) {
+      var uri = '/summaries?gid=' + groupId;
+      $summaryMore.append('<button class="btn more-btn">もっと見る</button>');
+      $summaryMore.children('button').on('click', function() {
+        location.href = uri;
+      });
+    }
   }
 
   function updateView(data) {
@@ -198,16 +213,16 @@ $(function() {
 
     if (drawType === 'rating') {
       updateRatingView(playersMap);
-      updateCommentView(playersMap);
+      updateCommentView(playersMap, data.group);
     } else if (drawType === 'all') {
       updateRatingView(playersMap);
       updateMomView(playersMap);
-      updateCommentView(playersMap);
-      updateSummaryView(data.summaries);
+      updateCommentView(playersMap, data.group);
+      updateSummaryView(data.summaries, data.group);
     } else if (drawType === 'mom') {
       updateMomView(playersMap);
     } else if (drawType === 'summary') {
-      updateSummaryView(data.summaries);
+      updateSummaryView(data.summaries, data.group);
     }
   }
 
