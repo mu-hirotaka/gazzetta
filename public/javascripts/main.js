@@ -186,6 +186,7 @@ $(function() {
   }
 
   function updateView(data) {
+    var drawType = data.type;
     var playersMap = {};
     _.each(data.players, function(item, index) {
       playersMap[item.id] = item;
@@ -195,10 +196,19 @@ $(function() {
       playersMap[item.id].comments = data.opinions[item.id];
     });
 
-    updateRatingView(playersMap);
-    updateMomView(playersMap);
-    updateCommentView(playersMap);
-    updateSummaryView(data.summaries);
+    if (drawType === 'rating') {
+      updateRatingView(playersMap);
+      updateCommentView(playersMap);
+    } else if (drawType === 'all') {
+      updateRatingView(playersMap);
+      updateMomView(playersMap);
+      updateCommentView(playersMap);
+      updateSummaryView(data.summaries);
+    } else if (drawType === 'mom') {
+      updateMomView(playersMap);
+    } else if (drawType === 'summary') {
+      updateSummaryView(data.summaries);
+    }
   }
 
   socket.on('login', function(data) {

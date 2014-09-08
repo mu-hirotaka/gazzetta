@@ -34,23 +34,24 @@ io.on('connection', function(socket) {
 
   socket.on('post rating', function(data) {
     updateRating(data);
-    broadcastBaseInfo();
   });
 
   socket.on('post mom', function(data) {
     updateMom(data);
-    broadcastBaseInfo();
+    broadcastBaseInfo('mom');
   });
 
   socket.on('post summary', function(data) {
     insertSummaryComment(data);
-    broadcastBaseInfo();
+    broadcastBaseInfo('summary');
   });
 
   socket.on('set local cache', function(data) {
     setLocalCache();
   });
 });
+
+setInterval(function() { broadcastBaseInfo('rating'); }, 5000);
 
 function initLocalCache() {
   playersMaster = [];
@@ -84,14 +85,14 @@ function emitBaseInfo(socket) {
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
     if (replies && (replies.length > 3)) {
-      socket.emit('login', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
     } else {
-      socket.emit('login', { players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
     }
   });
 }
 
-function broadcastBaseInfo() {
+function broadcastBaseInfo(type) {
   client.multi([
     ["mget"].concat(ratingSumKeys),
     ["mget"].concat(ratingNumKeys),
@@ -99,9 +100,9 @@ function broadcastBaseInfo() {
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
     if (replies && (replies.length > 3)) {
-      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
     } else {
-      io.sockets.emit('broadcast results', { players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
     }
   });
 }
