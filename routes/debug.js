@@ -74,8 +74,8 @@ router.post('/create_player_done', function(req, res) {
   var player = new Player({ id: id, group: group, fullName: fullName, shortName: shortName, valid: valid });
   player.save(function(err) {
     console.log(err);
+    res.redirect('/skdebug/create_player');
   });
-  res.redirect('/');
 });
 
 router.post('/player_comment', function(req, res) {
