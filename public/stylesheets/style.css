@@ -155,6 +155,19 @@ ul#player-list {
   padding-left: 10px;
 }
 
+#game-opinion > h3 {
+  font-size: 18px;
+  border-bottom: solid 2px #000;
+  padding-bottom: 4px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#game-opinion > ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
 span.plus {
   color: #DC143C;
 }

@@ -1,8 +1,12 @@
 $(function() {
   var socket = io.connect($('#uri').data('uri'));
 
+  var $playerList = $('#player-list');
+  var $opinion = $('#player-opinion');
+  var $table = $('#user-rating > tbody');
+  var $summary = $('#summaries');
+
   function init(data) {
-    var $playerList = $('#player-list');
     $playerList.empty();
     var players = data.players;
     _.each(players, function(item) {
@@ -111,10 +115,7 @@ $(function() {
       playersMap[item.id].comments = data.opinions[item.id];
     });
 
-    var $table = $('#user-rating');
     $table.empty();
-    $table.append('<thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead><tbody></tbody>');
-    var $tbody = $('#user-rating > tbody');
 
     var filteredForRating = _.filter(playersMap, function(item) {
       return item.ratingSum > 0;
@@ -140,7 +141,7 @@ $(function() {
           }
         }
       }
-      $tbody.append('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
+      $table.append('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
 
@@ -171,7 +172,6 @@ $(function() {
       return item.comments.length > 0;
     });
 
-    var $opinion = $('#player-opinion');
     $opinion.empty();
     $opinion.append('<h3>みんなのコメント(各々最新3件)</h3>');
     _.each(filteredForComment, function(item) {
@@ -183,8 +183,7 @@ $(function() {
       });
     });
 
-    $opinion.append('<h3>みんなの総評(最新3件)</h3><ul id="summaries"></ul>');
-    var $summary = $('#summaries');
+    $summary.empty();
     _.each(data.summaries, function(item) {
       $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');
     });
