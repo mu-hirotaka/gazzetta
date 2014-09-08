@@ -5,6 +5,9 @@ $(function() {
   var $opinion = $('#player-opinion');
   var $table = $('#user-rating > tbody');
   var $summary = $('#summaries');
+  var $momChart = $("#mom-chart");
+  var $momLegend = $("#mom-legend");
+  var chartCtx = $momChart.get(0).getContext("2d");
 
   function init(data) {
     $playerList.empty();
@@ -105,26 +108,16 @@ $(function() {
     });
   }
 
-  function updateCommentView(data) {
-    var playersMap = {};
-    _.each(data.players, function(item, index) {
-      playersMap[item.id] = item;
-      playersMap[item.id].ratingSum = data.ratings.sum[index];
-      playersMap[item.id].ratingNum = data.ratings.num[index];
-      playersMap[item.id].momNum = data.moms[index];
-      playersMap[item.id].comments = data.opinions[item.id];
-    });
-
+  function updateRatingView(playersMap) {
     $table.empty();
-
-    var filteredForRating = _.filter(playersMap, function(item) {
+    var filtered = _.filter(playersMap, function(item) {
       return item.ratingSum > 0;
     });
-    var sortedRatings = _.sortBy(filteredForRating, function(item) {
+    var sorted = _.sortBy(filtered, function(item) {
       return - item.ratingSum / item.ratingNum;
     });
     var rank = 1;
-    _.each(sortedRatings, function(item) {
+    _.each(sorted, function(item) {
       var avg = (item.ratingSum / item.ratingNum).toFixed(1);
       var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       var myRatingStr = '評価なし';
@@ -144,17 +137,19 @@ $(function() {
       $table.append('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
+  }
 
-    var filteredForMom = _.filter(playersMap, function(item) {
+  function updateMomView(playersMap) {
+    var filtered = _.filter(playersMap, function(item) {
       return item.momNum > 0;
     });
 
-    var sortedMoms = _.sortBy(filteredForMom, function(item) {
+    var sorted = _.sortBy(filtered, function(item) {
       return - item.momNum;
     });
     var segments = [];
     var CHART_COLOR = ['#aaf2fb', '#ffb6b9', '#ffe361', '#fbaa6e', '#A8BECB'];
-    _.each(sortedMoms, function(item, index) {
+    _.each(sorted, function(item, index) {
       if (index < CHART_COLOR.length) {
         segments.push({ label: item.shortName, color: CHART_COLOR[index], value: parseInt(item.momNum) });
       }
@@ -162,19 +157,18 @@ $(function() {
     var options = {
       legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\">&nbsp;&nbsp;&nbsp;</span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
     };
-    $("#mom-chart").empty();
-    var ctx = $("#mom-chart").get(0).getContext("2d");
-    var momChart = new Chart(ctx).Doughnut(segments, options);
-    $("#mom-chart").css({'width':'150', 'height':'150'});
-    $("#mom-legend").html(momChart.generateLegend());
+    var chart = new Chart(chartCtx).Doughnut(segments, options);
+    $momChart.css({'width':'150', 'height':'150'});
+    $momLegend.html(chart.generateLegend());
+  }
 
-    var filteredForComment = _.filter(playersMap, function(item) {
+  function updateCommentView(playersMap) {
+    var filtered = _.filter(playersMap, function(item) {
       return item.comments.length > 0;
     });
-
     $opinion.empty();
     $opinion.append('<h3>みんなのコメント(各々最新3件)</h3>');
-    _.each(filteredForComment, function(item) {
+    _.each(filtered, function(item) {
       $opinion.append('<h2>' + item.fullName + '</h2>');
       $opinion.append('<ul id="player-comment-' + item.id + '"></ul>');
       var $comment = $('#player-comment-' + item.id);
@@ -182,19 +176,37 @@ $(function() {
         $comment.append('<li><div class="bs-callout bs-callout-info">' + comment + '</div></li>');
       });
     });
+  }
 
+  function updateSummaryView(summaries) {
     $summary.empty();
-    _.each(data.summaries, function(item) {
+    _.each(summaries, function(item) {
       $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');
     });
   }
 
+  function updateView(data) {
+    var playersMap = {};
+    _.each(data.players, function(item, index) {
+      playersMap[item.id] = item;
+      playersMap[item.id].ratingSum = data.ratings.sum[index];
+      playersMap[item.id].ratingNum = data.ratings.num[index];
+      playersMap[item.id].momNum = data.moms[index];
+      playersMap[item.id].comments = data.opinions[item.id];
+    });
+
+    updateRatingView(playersMap);
+    updateMomView(playersMap);
+    updateCommentView(playersMap);
+    updateSummaryView(data.summaries);
+  }
+
   socket.on('login', function(data) {
     init(data);
-    updateCommentView(data);
+    updateView(data);
   });
 
   socket.on('broadcast results', function(data) {
-    updateCommentView(data);
+    updateView(data);
   });
 });
