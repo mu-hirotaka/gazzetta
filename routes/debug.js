@@ -93,4 +93,41 @@ router.get('/select_all_summaries', function(req, res) {
   });
 });
 
+
+router.get('/redis_form', function(req, res) {
+  client.multi().keys("*", function (err, replies) {
+    client.mget(replies);
+  }).exec(function (err, replies) {
+    res.render('debug/redis_form', { keys: replies[0] });
+  });
+});
+
+router.post('/redis_get', function(req, res) {
+  var key = req.body.key;
+  client.get(key, function(err, val) {
+    res.render('debug/redis_get', { key: key, value: val});
+  });
+});
+
+router.post('/redis_delete', function(req, res) {
+  var key = req.body.key;
+  client.del(key, function(err, val) {
+    res.redirect('/skdebug/redis_form');
+  });
+});
+
+router.post('/redis_list_get', function(req, res) {
+  var key = req.body.key;
+  client.lrange(key, 0, 1000, function(err, values) {
+    res.render('debug/redis_list_get', { key: key, values: values});
+  });
+});
+
+router.post('/redis_list_delete', function(req, res) {
+  var key = req.body.key;
+  client.lpop(key, function(err, val) {
+    res.redirect('/skdebug/redis_form');
+  });
+});
+
 module.exports = router;

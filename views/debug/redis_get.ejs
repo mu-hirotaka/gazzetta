@@ -9,27 +9,13 @@
   <body>
     <div class="container">
       <p><a href="/">Home</a></p>
-      <ul>
-        <% groupId = 2 %>
-        <li><a href="/skdebug/players?gid=<%= groupId %>">player list</a></li>
-        <li><a href="/skdebug/select_all_summaries?gid=<%= groupId %>">全総評を見る</a></li>
-        <li><a href="/skdebug/create_player">create player</a></li>
-        <li><a href="/skdebug/localstrage_clear">localStrage cache clear</a></li>
-        <li><a href="/skdebug/redis_form">redis form</a></li>
-        <li><button id="set-local-cache">set local cache</button></li>
-      </ul>
+      <p><a href="/skdebug">debug</a></p>
+      <p>key:  <%= key %></p>
+      <p>value:  <%= value %></p>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      $(function() {
-        var socket = io.connect('<%= uri %>');
-        $('#set-local-cache').on('click', function() {
-          socket.emit('set local cache', {});
-        });
-      });
-    </script>
   </body>
 </html>
