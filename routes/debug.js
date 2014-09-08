@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var url = require('url');
 var us = require('underscore')._;
 var config = require('../config');
 var model = require('../models.js');
@@ -19,11 +20,17 @@ router.get('/', function(req, res) {
 });
 
 router.get('/players', function(req, res) {
-  Player.find({}, function(err, players) {
+  var url_parts = url.parse(req.url, true);
+  var groupId = url_parts.query['gid'];
+  var params = {}
+  if (groupId) {
+    params['group'] = groupId;
+  }
+  Player.find(params, function(err, players) {
     players = us.sortBy(players, function (player) {
       return player.id;
     });
-    res.render('debug/players', { players: players, gid: 1 });
+    res.render('debug/players', { players: players });
   });
 });
 
@@ -44,7 +51,7 @@ router.post('/update_player', function(req, res) {
 });
 
 router.post('/delete_player', function(req, res) {
-  Player.findOne({id:parseInt(req.body.id)}, function(err, player){
+  Player.findOne({id:parseInt(req.body.id), group: parseInt(req.body.gid)}, function(err, player){
     player.remove();
   });
   res.redirect('/skdebug/players');
@@ -79,7 +86,9 @@ router.post('/player_comment', function(req, res) {
 });
 
 router.get('/select_all_summaries', function(req, res) {
-  client.lrange("summary:1", 0, 10000 ,function(err, summaries) {
+  var url_parts = url.parse(req.url, true);
+  var groupId = url_parts.query['gid'] || 2;
+  client.lrange("summary:" + groupId, 0, 10000 ,function(err, summaries) {
     res.render('debug/select_all_summaries', { summaries: summaries });
   });
 });
