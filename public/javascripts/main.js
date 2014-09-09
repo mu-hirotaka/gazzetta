@@ -188,6 +188,7 @@ $(function() {
 
   function updateSummaryView(summaries, groupId) {
     $summary.empty();
+    $summaryMore.empty();
     _.each(summaries, function(item) {
       $summary.append('<li><div class="bs-callout bs-callout-info">' + item + '</div></li>');
     });
