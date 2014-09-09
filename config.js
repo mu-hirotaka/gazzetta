@@ -1,7 +1,7 @@
 exports.production = {
   host: '',
   port: 3000,
-  uri: 'http://xxx.xxx.xxx/'
+  uri: 'http://rating.soccer-king.jp/'
 };
 
 exports.dev = {
