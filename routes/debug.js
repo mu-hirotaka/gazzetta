@@ -123,6 +123,13 @@ router.post('/redis_list_get', function(req, res) {
   });
 });
 
+router.post('/redis_list_length', function(req, res) {
+  var key = req.body.key;
+  client.llen(key, function(err, value) {
+    res.render('debug/redis_list_length', { key: key, length: value});
+  });
+});
+
 router.post('/redis_list_delete', function(req, res) {
   var key = req.body.key;
   client.lpop(key, function(err, val) {
