@@ -122,7 +122,7 @@ $(function() {
     var rank = 1;
     var nameToRating = [];
     _.each(sorted, function(item) {
-      var avg = (item.ratingSum / item.ratingNum).toFixed(1);
+      var avg = (item.ratingSum / item.ratingNum).toFixed(2);
       var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       var myRatingStr = '評価なし';
       if (myRating) {
