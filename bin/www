@@ -132,10 +132,11 @@ function updateRating(data) {
 
   if (opinion.length > 0) {
     var commentKey = "comment:" + gid + ':' + id;
+    var escapedComment = htmlEscape(opinion);
     if (formatedRating > 0) {
-      client.lpush(commentKey, opinion + ' [' + formatedRating + '点]');
+      client.lpush(commentKey, escapedComment + ' [' + formatedRating + '点]');
     } else {
-      client.lpush(commentKey, opinion + ' [評価なし]');
+      client.lpush(commentKey, escapedComment + ' [評価なし]');
     }
     client.lrange(commentKey, 0, 2 ,function(err, val) {
       comments[id] = val;
@@ -154,8 +155,11 @@ function insertSummaryComment(data) {
   var comment = data.comment;
   var gid = data.group;
   if (comment.length > 0) {
-    client.lpush(summaryKey, comment);
+    client.lpush(summaryKey, htmlEscape(comment));
   }
+}
+function htmlEscape(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
 function updateMom(data) {
