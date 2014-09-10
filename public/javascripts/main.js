@@ -4,6 +4,7 @@ $(function() {
   var $playerList = $('#player-list');
   var $opinion = $('#player-opinion');
   var $table = $('#user-rating > tbody');
+  var $tweetBtn = $('#twitter-tweet-btn');
   var $summary = $('#summaries');
   var $summaryMore = $('#summary-more');
   var $momChart = $("#mom-chart");
@@ -99,6 +100,7 @@ $(function() {
       var rating = $('#player-select-id' + playerId).val();
       var opinion = $('#player-input-id' + playerId).val();
       localStorage.setItem('player-id:' + groupId + ':' + playerId, rating);
+      localStorage.setItem('rating-done:' + groupId, 'true');
       socket.emit('post rating', {
         id: playerId,
         group: data.group,
@@ -109,7 +111,7 @@ $(function() {
     });
   }
 
-  function updateRatingView(playersMap) {
+  function updateRatingView(playersMap, groupId) {
     $table.empty();
     var filtered = _.filter(playersMap, function(item) {
       return item.ratingSum > 0;
@@ -118,13 +120,16 @@ $(function() {
       return - item.ratingSum / item.ratingNum;
     });
     var rank = 1;
+    var nameToRating = [];
     _.each(sorted, function(item) {
       var avg = (item.ratingSum / item.ratingNum).toFixed(1);
       var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       var myRatingStr = '評価なし';
       if (myRating) {
+        var tmpStr = item.shortName + myRating;
         myRating = parseFloat(myRating);
         if (myRating > 0) {
+          nameToRating.push(tmpStr);
           var diff = (myRating - avg).toFixed(1);
           if (diff > 0) {
             myRatingStr = myRating.toFixed(1) + '<span class="plus">(+' + diff + ')</span>';
@@ -138,6 +143,14 @@ $(function() {
       $table.append('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
+
+    var ratingFlg = localStorage.getItem('rating-done:' + groupId);
+    if (ratingFlg && nameToRating.length > 0) {
+      $tweetBtn.on('click', function() {
+        location.href='http://twitter.com/?status='+encodeURIComponent(nameToRating.join(' ') + ' http://bit.ly/1p5B1Es #俺ガゼッタ');
+      });
+      $tweetBtn.show();
+    }
   }
 
   function updateMomView(playersMap) {
@@ -213,10 +226,10 @@ $(function() {
     });
 
     if (drawType === 'rating') {
-      updateRatingView(playersMap);
+      updateRatingView(playersMap, data.group);
       updateCommentView(playersMap, data.group);
     } else if (drawType === 'all') {
-      updateRatingView(playersMap);
+      updateRatingView(playersMap, data.group);
       updateMomView(playersMap);
       updateCommentView(playersMap, data.group);
       updateSummaryView(data.summaries, data.group);
