@@ -147,7 +147,7 @@ $(function() {
     var ratingFlg = localStorage.getItem('rating-done:' + groupId);
     if (ratingFlg && nameToRating.length > 0) {
       $tweetBtn.on('click', function() {
-        location.href='http://twitter.com/?status='+encodeURIComponent(nameToRating.join(' ') + ' http://bit.ly/1p5B1Es #俺ガゼッタ');
+        location.href='http://twitter.com/share?url=http://bit.ly/1p5B1Es&text='+encodeURIComponent(nameToRating.join(' ') + ' #俺ガゼッタ');
       });
       $tweetBtn.show();
     }
