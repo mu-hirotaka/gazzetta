@@ -6,6 +6,7 @@ $(function() {
   var $table = $('#user-rating > tbody');
   var $tweetBtn = $('#twitter-tweet-btn');
   var $summary = $('#summaries');
+  var $summaryBtn = $('#summary-btn');
   var $summaryMore = $('#summary-more');
   var $momChart = $("#mom-chart");
   var $momLegend = $("#mom-legend");
@@ -67,7 +68,8 @@ $(function() {
 
     var summaryCache = localStorage.getItem('summary-' + data.group);
     if (!summaryCache) {
-      $('#summary-btn').on('click', function() {
+      $summaryBtn.off();
+      $summaryBtn.on('click', function() {
         socket.emit('post summary', {
           comment: $('#summary-comment').val(),
           group: data.group
@@ -84,12 +86,13 @@ $(function() {
         $('#mom-select').append('<option value="' + item.id + '">' + item.fullName + '</option>');
       });
       $('#mom-btn').on('click', function() {
+        var id = $('#mom-select').val();
         socket.emit('post mom', {
-          id: $('#mom-select').val(),
+          id: id,
           group: data.group
         });
         $('#mom').fadeOut('normal');
-        localStorage.setItem('mom-' + data.group, data.group);
+        localStorage.setItem('mom-' + data.group, id);
       });
       $('#mom').show();
     }
@@ -146,8 +149,19 @@ $(function() {
 
     var ratingFlg = localStorage.getItem('rating-done:' + groupId);
     if (ratingFlg && nameToRating.length > 0) {
+      $tweetBtn.off();
       $tweetBtn.on('click', function() {
-        location.href='http://twitter.com/share?url=http://bit.ly/1p5B1Es&text='+encodeURIComponent(nameToRating.join(' ') + ' #俺ガゼッタ');
+        var momStr = '';
+        var momPlayerId = localStorage.getItem('mom-' + groupId);
+        if (momPlayerId) {
+          var player = _.find(playersMap, function(item) {
+            return momPlayerId == item.id
+          });
+          if (player) {
+            momStr = ' MoM:' + player.shortName;
+          }
+        }
+        location.href='http://twitter.com/share?url=http://bit.ly/1p5B1Es&text='+encodeURIComponent(nameToRating.join(' ') + momStr + ' #俺ガゼッタ');
       });
       $tweetBtn.show();
     }
