@@ -115,23 +115,39 @@ function updateRating(data) {
   var ratingNumKey = 'ratingNum:' + gid + ':' + id;
   var ratingSumKey = 'ratingSum:' + gid + ':' + id;
 
+  if (!ratingValidation(formatedRating)) {
+    return;
+  }
   client.get(ratingSumKey, function(err, val) {
-    if (val) {
-      client.set(ratingSumKey, parseFloat(val) + formatedRating);
+    if (formatedRating > 0) {
+      if (val) {
+        client.set(ratingSumKey, parseFloat(val) + formatedRating);
+      }
+      else {
+        client.set(ratingSumKey, formatedRating);
+      }
+      client.incr(ratingNumKey);
     }
-    else {
-      client.set(ratingSumKey, formatedRating);
-    }
-    client.incr(ratingNumKey);
   });
 
   if (opinion.length > 0) {
     var commentKey = "comment:" + gid + ':' + id;
-    client.lpush(commentKey, opinion);
+    if (formatedRating > 0) {
+      client.lpush(commentKey, opinion + ' [' + formatedRating + '点]');
+    } else {
+      client.lpush(commentKey, opinion + ' [評価なし]');
+    }
     client.lrange(commentKey, 0, 2 ,function(err, val) {
       comments[id] = val;
     });
   }
+}
+
+function ratingValidation(formatedRating) {
+  if (formatedRating >= 0 && formatedRating <= 10) {
+    return true;
+  }
+  return false;
 }
 
 function insertSummaryComment(data) {
