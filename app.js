@@ -1,4 +1,5 @@
 var express = require('express');
+var basicAuth = require('basic-auth-connect');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -20,6 +21,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.all('/skdebug/*', basicAuth(function(user, password) {
+  return user === 'sk' && password === 'ks';
+}));
 
 app.use('/', routes);
 app.use('/skdebug', debug);

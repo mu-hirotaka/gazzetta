@@ -18,7 +18,8 @@
     "ejs": "~0.8.5",
     "pm2": "~0.10.3",
     "redis": "~0.12.1",
-    "underscore": "~1.7.0"
+    "underscore": "~1.7.0",
+    "basic-auth-connect": "~1.0.0"
   },
   "devDependencies": {
     "socket.io": "~1.0.6",
