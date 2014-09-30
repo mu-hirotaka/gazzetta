@@ -133,7 +133,7 @@ $(function() {
         myRating = parseFloat(myRating);
         if (myRating > 0) {
           nameToRating.push(tmpStr);
-          var diff = (myRating - avg).toFixed(1);
+          var diff = (myRating - avg).toFixed(2);
           if (diff > 0) {
             myRatingStr = myRating.toFixed(1) + '<span class="plus">(+' + diff + ')</span>';
           } else if (diff >= 0) {
