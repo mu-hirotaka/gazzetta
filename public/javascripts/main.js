@@ -13,6 +13,9 @@ $(function() {
   var chartCtx = $momChart.get(0).getContext("2d");
 
   function init(data) {
+    var groupContent = data.groupContent;
+    $('#group-content').text(groupContent);
+
     $playerList.empty();
     var players = data.players;
     _.each(players, function(item) {

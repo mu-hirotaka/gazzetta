@@ -11,6 +11,20 @@ var Player = new mongoose.Schema({
 });
 exports.Player = db.model('player', Player);
 
+var Event = new mongoose.Schema({
+  id:        { type: Number  },
+  content:   { type: String  },
+  valid:     { type: Boolean }
+});
+exports.Event = db.model('event', Event);
+
+var Group = new mongoose.Schema({
+  id:             { type: Number },
+  currentValidId: { type: Number },
+  content:        { type: String }
+});
+exports.Group = db.model('group', Group);
+
 //var Rating = new mongoose.Schema({
 //  id:    { type: Number },
 //  group: { type: Number },

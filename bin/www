@@ -19,10 +19,10 @@ var server = app.listen(app.get('port'), app.get('host'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
 
-var Player = model.Player;
 
-var groupId = 2;
-var playersMaster, ratingSumKeys, ratingNumKeys, momKeys, comments, summaryKey;
+var Player = model.Player;
+var Group = model.Group;
+var groupId, groupContent, playersMaster, ratingSumKeys, ratingNumKeys, momKeys, comments, summaryKey;
 
 setLocalCache();
 
@@ -54,6 +54,8 @@ io.on('connection', function(socket) {
 setInterval(function() { broadcastBaseInfo('rating'); }, 5000);
 
 function initLocalCache() {
+  groupId = 3;
+  groupContent = 'ジャマイカ戦を1点〜10点で採点しよう!';
   playersMaster = [];
   ratingSumKeys = [];
   ratingNumKeys = [];
@@ -64,14 +66,20 @@ function initLocalCache() {
 
 function setLocalCache() {
   initLocalCache();
-  Player.find({ group: groupId, valid: true }).sort('id').exec(function(err, players) {
-    playersMaster = players;
-    us.each(players, function(item) {
-      ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
-      ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
-      momKeys.push('mom:' + groupId + ':' + item.id);
-      client.lrange('comment:' + groupId + ':' + item.id, 0, 2 ,function(err, val) {
-        comments[item.id] = val;
+  Group.findOne({id:1}, function(err, currentGroup) {
+    if (currentGroup) {
+      groupId = currentGroup.currentValidId;
+      groupContent = currentGroup.content;
+    }
+    Player.find({ group: groupId, valid: true }).sort('id').exec(function(err, players) {
+      playersMaster = players;
+      us.each(players, function(item) {
+        ratingSumKeys.push('ratingSum:' + groupId + ':' + item.id);
+        ratingNumKeys.push('ratingNum:' + groupId + ':' + item.id);
+        momKeys.push('mom:' + groupId + ':' + item.id);
+        client.lrange('comment:' + groupId + ':' + item.id, 0, 2 ,function(err, val) {
+          comments[item.id] = val;
+        });
       });
     });
   });
@@ -85,9 +93,9 @@ function emitBaseInfo(socket) {
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
     if (replies && (replies.length > 3)) {
-      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId, groupContent: groupContent });
     } else {
-      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+      socket.emit('login', { type: 'all', players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId, groupContent: groupContent });
     }
   });
 }
@@ -100,9 +108,9 @@ function broadcastBaseInfo(type) {
     ["lrange", summaryKey, 0, 2]
   ]).exec(function (err, replies) {
     if (replies && (replies.length > 3)) {
-      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId });
+      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: replies[0], num: replies[1] }, opinions: comments, summaries: replies[3], moms: replies[2], group: groupId, groupContent: groupContent  });
     } else {
-      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId });
+      io.sockets.emit('broadcast results', { type: type, players: playersMaster, ratings: { sum: [], num: [] }, opinions: comments, summaries: [], moms: [], group: groupId, groupContent: groupContent  });
     }
   });
 }

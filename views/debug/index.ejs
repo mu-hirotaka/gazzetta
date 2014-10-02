@@ -10,13 +10,15 @@
     <div class="container">
       <p><a href="/">Home</a></p>
       <ul>
-        <% groupId = 2 %>
+        <% groupId = 3 %>
         <li><a href="/skdebug/players?gid=<%= groupId %>">player list</a></li>
         <li><a href="/skdebug/select_all_summaries?gid=<%= groupId %>">全総評を見る</a></li>
         <li><a href="/skdebug/create_player">create player</a></li>
         <li><a href="/skdebug/localstrage_clear">localStrage cache clear</a></li>
         <li><a href="/skdebug/redis_form">redis form</a></li>
         <li><button id="set-local-cache">set local cache</button></li>
+        <li><a href="/skdebug/create_group">create group(ほとんど使わない)</a></li>
+        <li><a href="/skdebug/groups">group list</a></li>
       </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>

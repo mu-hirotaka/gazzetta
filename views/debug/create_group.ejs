@@ -10,17 +10,10 @@
     <div class="container">
       <p><a href="/">Home</a></p>
       <p><a href="/skdebug">debug</a></p>
-      <form action="/skdebug/create_player_done" method="POST">
+      <form action="/skdebug/create_group_done" method="POST">
         <p>ID:<input type="text" name="id"></p>
-        <p>group:<input type="text" name="group" value="3"></p>
-        <p>Full Name:<input type="text" name="fullName"></p>
-        <p>Short Name:<input type="text" name="shortName"></p>
-        <p>valid:
-          <select name="valid">
-            <option value="1">有効</option>
-            <option value="0" selected>無効</option>
-          </select>
-        </p>
+        <p>currentValidId:<input type="text" name="currentValidId" value="3"></p>
+        <p>content:<input type="text" name="content"></p>
         <input type="submit" value="登録">
       </form>
     </div>

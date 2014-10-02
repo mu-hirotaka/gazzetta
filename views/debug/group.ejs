@@ -10,19 +10,14 @@
     <div class="container">
       <p><a href="/">Home</a></p>
       <p><a href="/skdebug">debug</a></p>
-      <form action="/skdebug/create_player_done" method="POST">
-        <p>ID:<input type="text" name="id"></p>
-        <p>group:<input type="text" name="group" value="3"></p>
-        <p>Full Name:<input type="text" name="fullName"></p>
-        <p>Short Name:<input type="text" name="shortName"></p>
-        <p>valid:
-          <select name="valid">
-            <option value="1">有効</option>
-            <option value="0" selected>無効</option>
-          </select>
-        </p>
-        <input type="submit" value="登録">
-      </form>
+      <ul>
+        <form action="/skdebug/update_group" method="POST">
+          <p>ID:<input type="text" name="id" value="<%= group.id %>"></p>
+          <p>currentValidId:<input type="text" name="currentValidId" value="<%= group.currentValidId %>"></p>
+          <p>content:<input type="text" name="content" value="<%= group.content %>"></p>
+          <input type="submit" value="更新">
+        </form>
+      </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>

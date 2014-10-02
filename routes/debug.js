@@ -8,6 +8,7 @@ var redis = require('redis'),
     client = redis.createClient();
 
 var Player = model.Player;
+var Group = model.Group;
 
 router.get('/', function(req, res) {
   var uri = '';
@@ -73,7 +74,6 @@ router.post('/create_player_done', function(req, res) {
   var valid = req.body.valid == 1 ? true : false;
   var player = new Player({ id: id, group: group, fullName: fullName, shortName: shortName, valid: valid });
   player.save(function(err) {
-    console.log(err);
     res.redirect('/skdebug/create_player');
   });
 });
@@ -134,6 +134,48 @@ router.post('/redis_list_delete', function(req, res) {
   var key = req.body.key;
   client.lpop(key, function(err, val) {
     res.redirect('/skdebug/redis_form');
+  });
+});
+
+router.get('/create_group', function(req, res) {
+  res.render('debug/create_group', {});
+});
+
+router.post('/create_group_done', function(req, res) {
+  var id = parseInt(req.body.id);
+  var currentValidId = parseInt(req.body.currentValidId);
+  var content = req.body.content;
+  var group = new Group({ id: id, currentValidId: currentValidId, content: content });
+  group.save(function(err) {
+    res.redirect('/skdebug');
+  });
+});
+
+router.get('/groups', function(req, res) {
+  Group.find({}, function(err, groups) {
+    res.render('debug/groups', { groups: groups });
+  });
+});
+
+router.post('/group', function(req, res) {
+  Group.findOne({id:parseInt(req.body.id)}, function(err, group){
+    res.render('debug/group', { group: group });
+  });
+});
+
+router.post('/update_group', function(req, res) {
+  Group.findOne({id:parseInt(req.body.id)}, function(err, group){
+    group.currentValidId = parseInt(req.body.currentValidId);
+    group.content = req.body.content;
+    group.save();
+    res.redirect('/skdebug/groups');
+  });
+});
+
+router.post('/delete_group', function(req, res) {
+  Group.findOne({id:parseInt(req.body.id)}, function(err, group){
+    group.remove();
+    res.redirect('/skdebug/groups');
   });
 });
 
