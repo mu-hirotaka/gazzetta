@@ -9,6 +9,7 @@ var redis = require('redis'),
 
 var Player = model.Player;
 var Group = model.Group;
+var Event = model.Event;
 
 router.get('/', function(req, res) {
   var uri = '';
@@ -176,6 +177,48 @@ router.post('/delete_group', function(req, res) {
   Group.findOne({id:parseInt(req.body.id)}, function(err, group){
     group.remove();
     res.redirect('/skdebug/groups');
+  });
+});
+
+router.get('/create_event', function(req, res) {
+  res.render('debug/create_event', {});
+});
+
+router.post('/create_event_done', function(req, res) {
+  var id = parseInt(req.body.id);
+  var content = req.body.content;
+  var valid = req.body.valid == 1 ? true : false;
+  var event = new Event({ id: id, content: content, valid: valid });
+  event.save(function(err) {
+    res.redirect('/skdebug');
+  });
+});
+
+router.get('/events', function(req, res) {
+  Event.find({}, function(err, events) {
+    res.render('debug/events', { events: events });
+  });
+});
+
+router.post('/event', function(req, res) {
+  Event.findOne({id:parseInt(req.body.id)}, function(err, event){
+    res.render('debug/event', { event: event });
+  });
+});
+
+router.post('/update_event', function(req, res) {
+  Event.findOne({id:parseInt(req.body.id)}, function(err, event){
+    event.valid = parseInt(req.body.valid) ? true : false;
+    event.content = req.body.content;
+    event.save();
+    res.redirect('/skdebug/events');
+  });
+});
+
+router.post('/delete_event', function(req, res) {
+  Event.findOne({id:parseInt(req.body.id)}, function(err, event){
+    event.remove();
+    res.redirect('/skdebug/events');
   });
 });
 

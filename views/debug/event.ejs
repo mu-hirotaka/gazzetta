@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>debug</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <ul>
+        <form action="/skdebug/update_event" method="POST">
+          <p>ID:<input type="text" name="id" value="<%= event.id %>"></p>
+          <p>content:<input type="text" name="content" value="<%= event.content %>"></p>
+          <p>valid:
+            <select name="valid">
+              <% if (event.valid) { %>
+                <option value="1" selected>有効</option>
+                <option value="0">無効</option>
+              <% } else { %>
+                <option value="1">有効</option>
+                <option value="0" selected>無効</option>
+              <% } %>
+            </select>
+          </p>
+          <input type="submit" value="更新">
+        </form>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
