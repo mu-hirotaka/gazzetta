@@ -254,10 +254,63 @@ footer {
 
 #twitter-tweet-btn {
   display: none;
-  margin-top: -20px;
+  margin-top: 10px;
   background-color: #00aced;
   border: 1px solid #0090c4;
   color: white;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+#event-main {
+  display: none;
+}
+
+#event-main > h3 {
+  font-size: 18px;
+  border-bottom: solid 2px #000;
+  padding-bottom: 4px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#event-main button {
+  background-color: #ffee00;
+  border: 2px solid #333;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+}
+#event-main p {
+  margin: 5px 0 5px;
+}
+
+#event-main p.text {
+  font-size: 13px;
+}
+
+#event-main p.caution {
+  font-size: 10px;
+  color: red;
+}
+
+#service-open {
+  display: none;
+}
+
+#service-maintenance {
+  display: none;
+}
+
+#service-maintenance p {
+  margin: 5px 0px 5px;;
+  text-align: center;
+}
+
+#service-maintenance button {
+  background-color: #ffee00;
+  border: 2px solid #333;
+  color: #000;
   font-weight: bold;
   box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
 }

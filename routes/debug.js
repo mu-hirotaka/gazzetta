@@ -10,6 +10,7 @@ var redis = require('redis'),
 var Player = model.Player;
 var Group = model.Group;
 var Event = model.Event;
+var Maintenance = model.Maintenance;
 
 router.get('/', function(req, res) {
   var uri = '';
@@ -88,7 +89,7 @@ router.post('/player_comment', function(req, res) {
 
 router.get('/select_all_summaries', function(req, res) {
   var url_parts = url.parse(req.url, true);
-  var groupId = url_parts.query['gid'] || 2;
+  var groupId = url_parts.query['gid'] || 3;
   client.lrange("summary:" + groupId, 0, 10000 ,function(err, summaries) {
     res.render('debug/select_all_summaries', { summaries: summaries });
   });
@@ -219,6 +220,46 @@ router.post('/delete_event', function(req, res) {
   Event.findOne({id:parseInt(req.body.id)}, function(err, event){
     event.remove();
     res.redirect('/skdebug/events');
+  });
+});
+
+router.get('/create_maintenance', function(req, res) {
+  res.render('debug/create_maintenance', {});
+});
+
+router.post('/create_maintenance_done', function(req, res) {
+  var id = parseInt(req.body.id);
+  var valid = req.body.valid == 1 ? true : false;
+  var maintenance = new Maintenance({ id: id, valid: valid });
+  maintenance.save(function(err) {
+    res.redirect('/skdebug');
+  });
+});
+
+router.get('/maintenances', function(req, res) {
+  Maintenance.find({}, function(err, maintenances) {
+    res.render('debug/maintenances', { maintenances: maintenances });
+  });
+});
+
+router.post('/maintenance', function(req, res) {
+  Maintenance.findOne({id:parseInt(req.body.id)}, function(err, maintenance){
+    res.render('debug/maintenance', { maintenance: maintenance });
+  });
+});
+
+router.post('/update_maintenance', function(req, res) {
+  Maintenance.findOne({id:parseInt(req.body.id)}, function(err, maintenance){
+    maintenance.valid = parseInt(req.body.valid) ? true : false;
+    maintenance.save();
+    res.redirect('/skdebug/maintenances');
+  });
+});
+
+router.post('/delete_maintenance', function(req, res) {
+  Maintenance.findOne({id:parseInt(req.body.id)}, function(err, maintenance){
+    maintenance.remove();
+    res.redirect('/skdebug/maintenances');
   });
 });
 

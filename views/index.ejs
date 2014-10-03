@@ -29,33 +29,42 @@
         <h2><%= title %></h2>
         <p id="group-content"></p>
       </div>
-      <ul id="player-list"></ul>
 
-      <div id="mom">
-        <p>Man of the Match</p>
-        <select id="mom-select"><option value="0" selected>該当者なし</option></select>
-        <button type="button" id="mom-btn" class="btn btn-sm">確定</button>
+      <div id="service-open">
+        <ul id="player-list"></ul>
+        <div id="mom">
+          <p>Man of the Match</p>
+          <select id="mom-select"><option value="0" selected>該当者なし</option></select>
+          <button type="button" id="mom-btn" class="btn btn-sm">確定</button>
+        </div>
+        <div id="summary">
+          <p>総評</p>
+          <textarea id="summary-comment" placeholder="総評を入力してください" /></textarea>
+          <button type="button" id="summary-btn" class="btn btn-sm">確定</button>
+        </div>
+        <div id="rating-title"><h3>採点ランキング</h3></div>
+        <table id="user-rating" class="table table-striped">
+          <thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="event-main">
+          <% include index/event/1 %>
+        </div>
+        <center><button type="button" id="twitter-tweet-btn" class="btn btn-sm">自分の採点をツイート</button></center>
+        <table id="user-mom" class="table table-striped"></table>
+        <div id="mom-title"><h3>Man of the Match(上位5名)</h3></div>
+        <center><canvas id="mom-chart" width="150" height="150"></canvas></center>
+        <div id="mom-legend"></div>
+        <div id="player-opinion"></div>
+        <div id="game-opinion">
+          <h3>みんなの総評(最新3件)</h3>
+          <ul id="summaries"></ul>
+          <div id="summary-more"></div>
+        </div>
       </div>
-      <div id="summary">
-        <p>総評</p>
-        <textarea id="summary-comment" placeholder="総評を入力してください" /></textarea>
-        <button type="button" id="summary-btn" class="btn btn-sm">確定</button>
-      </div>
-      <div id="rating-title"><h3>採点ランキング</h3></div>
-      <table id="user-rating" class="table table-striped">
-        <thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <center><button type="button" id="twitter-tweet-btn" class="btn btn-sm">自分の採点をツイート</button></center>
-      <table id="user-mom" class="table table-striped"></table>
-      <div id="mom-title"><h3>Man of the Match(上位5名)</h3></div>
-      <center><canvas id="mom-chart" width="150" height="150"></canvas></center>
-      <div id="mom-legend"></div>
-      <div id="player-opinion"></div>
-      <div id="game-opinion">
-        <h3>みんなの総評(最新3件)</h3>
-        <ul id="summaries"></ul>
-        <div id="summary-more"></div>
+
+      <div id="service-maintenance">
+        <% include index/maintenance %>
       </div>
     </div>
     <footer>Copyright 2010-2014 FromOne co.,Ltd All Rights Reserved.</footer>

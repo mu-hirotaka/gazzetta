@@ -13,6 +13,14 @@ $(function() {
   var chartCtx = $momChart.get(0).getContext("2d");
 
   function init(data) {
+
+    if (data.maintenance.valid === true) {
+      $('#service-maintenance').show();
+      return;
+    } else {
+      $('#service-open').show();
+    }
+
     var groupContent = data.groupContent;
     $('#group-content').text(groupContent);
 
@@ -161,10 +169,10 @@ $(function() {
             return momPlayerId == item.id
           });
           if (player) {
-            momStr = ' MoM:' + player.shortName;
+            momStr = ' MOM:' + player.shortName;
           }
         }
-        location.href='http://twitter.com/share?url=http://bit.ly/1p5B1Es&text='+encodeURIComponent(nameToRating.join(' ') + momStr + ' #俺ガゼッタ');
+        location.href='http://twitter.com/share?url=http://rating.soccer-king.jp/&text='+encodeURIComponent(nameToRating.join(' ') + momStr + ' #俺ガゼッタ');
       });
       $tweetBtn.show();
     }

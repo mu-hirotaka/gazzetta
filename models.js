@@ -25,6 +25,12 @@ var Group = new mongoose.Schema({
 });
 exports.Group = db.model('group', Group);
 
+var Maintenance = new mongoose.Schema({
+  id:    { type: Number },
+  valid: { type: Boolean }
+});
+exports.Maintenance = db.model('maintenance', Maintenance);
+
 //var Rating = new mongoose.Schema({
 //  id:    { type: Number },
 //  group: { type: Number },

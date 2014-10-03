@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>debug</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+      <p><a href="/">Home</a></p>
+      <p><a href="/skdebug">debug</a></p>
+      <ul style="padding-left: 10px;">
+        <% for (var i=0; i < maintenances.length; i++) { %>
+        <li style="list-style:none; margin-bottom:5px;">
+          <div style="float:left;"><%= maintenances[i].id %>:<%= maintenances[i].valid %></div>
+          <div style="float:left; margin-left: 5px;">
+            <form action="/skdebug/maintenance" method="POST">
+              <input type="hidden" name="id" value="<%= maintenances[i].id %>"> 
+              <input type="submit" value="更新">
+            </form>
+          </div>
+          <div style="float:left; margin-left: 5px;">
+            <form action="/skdebug/delete_maintenance" method="POST">
+              <input type="hidden" name="id" value="<%= maintenances[i].id %>"> 
+              <input type="submit" value="削除">
+            </form>
+          </div>
+          <div style="clear: both"></div>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
