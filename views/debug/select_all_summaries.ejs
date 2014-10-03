@@ -7,9 +7,10 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <p><a href="/">Home</a></p>
-      <p><a href="/skdebug">debug</a></p>
       <div id="player-opinion">
         <ul>
           <% for (var i = 0; i < summaries.length; i++) { %>

@@ -7,9 +7,10 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <p><a href="/">Home</a></p>
-      <p><a href="/skdebug">debug</a></p>
       <form action="/skdebug/create_group_done" method="POST">
         <p>ID:<input type="text" name="id"></p>
         <p>currentValidId:<input type="text" name="currentValidId" value="3"></p>

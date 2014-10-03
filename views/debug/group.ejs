@@ -7,17 +7,16 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <p><a href="/">Home</a></p>
-      <p><a href="/skdebug">debug</a></p>
-      <ul>
-        <form action="/skdebug/update_group" method="POST">
-          <p>ID:<input type="text" name="id" value="<%= group.id %>"></p>
-          <p>currentValidId:<input type="text" name="currentValidId" value="<%= group.currentValidId %>"></p>
-          <p>content:<input type="text" name="content" value="<%= group.content %>"></p>
-          <input type="submit" value="更新">
-        </form>
-      </ul>
+      <form action="/skdebug/update_group" method="POST">
+        <p>ID:<input type="text" name="id" value="<%= group.id %>"></p>
+        <p>currentValidId:<input type="text" name="currentValidId" value="<%= group.currentValidId %>"></p>
+        <p>content:<input type="text" name="content" value="<%= group.content %>"></p>
+        <input type="submit" value="更新">
+      </form>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>

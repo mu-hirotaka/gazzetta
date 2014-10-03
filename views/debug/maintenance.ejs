@@ -7,25 +7,25 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <ul>
-        <form action="/skdebug/update_maintenance" method="POST">
-          <p>ID:<input type="text" name="id" value="<%= maintenance.id %>"></p>
-          <p>valid:
-            <select name="valid">
-              <% if (maintenance.valid) { %>
-                <option value="1" selected>有効</option>
-                <option value="0">無効</option>
-              <% } else { %>
-                <option value="1">有効</option>
-                <option value="0" selected>無効</option>
-              <% } %>
-            </select>
-          </p>
-          <input type="submit" value="更新">
-        </form>
-        <li><a href="/">Home</a></li>
-      </ul>
+      <form action="/skdebug/update_maintenance" method="POST">
+        <p>ID:<input type="text" name="id" value="<%= maintenance.id %>"></p>
+        <p>valid:
+          <select name="valid">
+            <% if (maintenance.valid) { %>
+              <option value="1" selected>有効</option>
+              <option value="0">無効</option>
+            <% } else { %>
+              <option value="1">有効</option>
+              <option value="0" selected>無効</option>
+            <% } %>
+          </select>
+        </p>
+        <input type="submit" value="更新">
+      </form>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>

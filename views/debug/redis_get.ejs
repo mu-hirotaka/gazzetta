@@ -7,15 +7,15 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <p><a href="/">Home</a></p>
-      <p><a href="/skdebug">debug</a></p>
       <p>key:  <%= key %></p>
       <p>value:  <%= value %></p>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
   </body>
 </html>

@@ -7,9 +7,10 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div class="header-debug">
+      <% include header %>
+    </div>
     <div class="container">
-      <p><a href="/">Home</a></p>
-      <p><a href="/skdebug">debug</a></p>
       <ul style="padding-left: 10px;">
         <% for (var i=0; i < players.length; i++) { %>
         <li style="list-style:none; margin-bottom:5px;">
