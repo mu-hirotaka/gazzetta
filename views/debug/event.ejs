@@ -25,6 +25,28 @@
             <% } %>
           </select>
         </p>
+        <p>availableViewScore:
+          <select name="availableViewScore">
+            <% if (event.availableViewScore) { %>
+              <option value="1" selected>有効</option>
+              <option value="0">無効</option>
+            <% } else { %>
+              <option value="1">有効</option>
+              <option value="0" selected>無効</option>
+            <% } %>
+          </select>
+        </p>
+        <p>availableViewComment:
+          <select name="availableViewComment">
+            <% if (event.availableViewComment) { %>
+              <option value="1" selected>有効</option>
+              <option value="0">無効</option>
+            <% } else { %>
+              <option value="1">有効</option>
+              <option value="0" selected>無効</option>
+            <% } %>
+          </select>
+        </p>
         <input type="submit" value="更新">
       </form>
     </div>

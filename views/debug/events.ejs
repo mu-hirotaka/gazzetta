@@ -14,7 +14,7 @@
       <ul style="padding-left: 10px;">
         <% for (var i=0; i < events.length; i++) { %>
         <li style="list-style:none; margin-bottom:5px;">
-          <div style="float:left;"><%= events[i].id %>:<%= events[i].content %>:<%= events[i].valid %></div>
+        <div style="float:left;"><%= events[i].id %>:<%= events[i].content %>:<%= events[i].valid %>:<%= events[i].availableViewScore %>:<%= events[i].availableViewComment %></div>
           <div style="float:left; margin-left: 5px;">
             <form action="/skdebug/event" method="POST">
               <input type="hidden" name="id" value="<%= events[i].id %>"> 

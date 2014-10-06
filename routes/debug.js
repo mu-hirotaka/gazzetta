@@ -189,7 +189,9 @@ router.post('/create_event_done', function(req, res) {
   var id = parseInt(req.body.id);
   var content = req.body.content;
   var valid = req.body.valid == 1 ? true : false;
-  var event = new Event({ id: id, content: content, valid: valid });
+  var availableViewScore = req.body.availableViewScore == 1 ? true : false;
+  var availableViewComment = req.body.availableViewComment == 1 ? true : false;
+  var event = new Event({ id: id, content: content, valid: valid, availableViewScore: availableViewScore, availableViewComment: availableViewComment });
   event.save(function(err) {
     res.redirect('/skdebug');
   });
@@ -210,6 +212,8 @@ router.post('/event', function(req, res) {
 router.post('/update_event', function(req, res) {
   Event.findOne({id:parseInt(req.body.id)}, function(err, event){
     event.valid = parseInt(req.body.valid) ? true : false;
+    event.availableViewScore = parseInt(req.body.availableViewScore) ? true : false;
+    event.availableViewComment = parseInt(req.body.availableViewComment) ? true : false;
     event.content = req.body.content;
     event.save();
     res.redirect('/skdebug/events');

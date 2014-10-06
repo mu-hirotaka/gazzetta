@@ -108,6 +108,8 @@ $(function() {
       $('#mom').show();
     }
 
+    showEventView(data.eventInfo);
+
     $('.player-btn').on('click', function() {
       var playerId = $(this).data('player-id');
       var groupId = $(this).data('group-id');
@@ -123,6 +125,28 @@ $(function() {
       });
       $('#player-id-' + playerId).fadeOut('normal');
     });
+  }
+
+  function showEventView(eventInfo) {
+    if (eventInfo.valid == true) {
+      var eventId = eventInfo.events[0].id;
+      var cache = localStorage.getItem('event-rating-done:' + eventId);
+      if (!cache) {
+        $('#event-main').show();
+        $('#event-main button').on('click', function() {
+          var eventId = eventInfo.events[0].id;
+          var rating = $('#event-rating').val();
+          var comment = $('#event-comment').val();
+          localStorage.setItem('event-rating-done:' + eventId, 'true');
+          socket.emit('post event rating', {
+            eventId: eventId,
+            rating: rating,
+            comment: comment,
+          });
+          $('#event-main').fadeOut('normal');
+        });
+      }
+    }
   }
 
   function updateRatingView(playersMap, groupId) {

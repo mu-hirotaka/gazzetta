@@ -39,6 +39,10 @@ io.on('connection', function(socket) {
     updateRating(data);
   });
 
+  socket.on('post event rating', function(data) {
+    updateEventRating(data);
+  });
+
   socket.on('post mom', function(data) {
     updateMom(data);
     broadcastBaseInfo('mom');
@@ -181,9 +185,39 @@ function updateRating(data) {
     } else {
       client.lpush(commentKey, escapedComment + ' [評価なし]');
     }
-    client.lrange(commentKey, 0, 2 ,function(err, val) {
-      comments[id] = val;
-    });
+  }
+}
+
+function updateEventRating(data) {
+  var eventId = data.eventId;
+  var formatedRating = parseFloat(data.rating);
+  var comment = data.comment;
+  var ratingNumKey = 'ratingNum:event:' + eventId;
+  var ratingSumKey = 'ratingSum:event:' + eventId;
+
+  if (!ratingValidation(formatedRating)) {
+    return;
+  }
+  client.get(ratingSumKey, function(err, val) {
+    if (formatedRating > 0) {
+      if (val) {
+        client.set(ratingSumKey, parseFloat(val) + formatedRating);
+      }
+      else {
+        client.set(ratingSumKey, formatedRating);
+      }
+      client.incr(ratingNumKey);
+    }
+  });
+
+  if (comment.length > 0) {
+    var commentKey = "comment:event:" + eventId;
+    var escapedComment = htmlEscape(comment);
+    if (formatedRating > 0) {
+      client.lpush(commentKey, escapedComment + ' [' + formatedRating + '点]');
+    } else {
+      client.lpush(commentKey, escapedComment + ' [評価なし]');
+    }
   }
 }
 

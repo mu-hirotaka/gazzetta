@@ -12,9 +12,11 @@ var Player = new mongoose.Schema({
 exports.Player = db.model('player', Player);
 
 var Event = new mongoose.Schema({
-  id:        { type: Number  },
-  content:   { type: String  },
-  valid:     { type: Boolean }
+  id:                   { type: Number  },
+  content:              { type: String  },
+  valid:                { type: Boolean },
+  availableViewScore:   { type: Boolean },
+  availableViewComment: { type: Boolean }
 });
 exports.Event = db.model('event', Event);
 

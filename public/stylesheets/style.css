@@ -8,6 +8,10 @@ body {
   padding-right: 0px;
 }
 
+.table {
+  margin-bottom: 3px;
+}
+
 .sk-title {
   height: 50px;
   background-color: #ffee00;
