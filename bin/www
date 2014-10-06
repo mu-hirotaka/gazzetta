@@ -70,7 +70,6 @@ function initLocalCache() {
   ratingNumKeys = [];
   momKeys = [];
   comments = {};
-  summaryKey = "summary:" + groupId;
 }
 
 function setLocalCache() {
@@ -102,6 +101,7 @@ function setLocalCache() {
           groupId = currentGroup.currentValidId;
           groupContent = currentGroup.content;
         }
+        summaryKey = "summary:" + groupId;
         callback(null);
       });
     },
@@ -185,6 +185,9 @@ function updateRating(data) {
     } else {
       client.lpush(commentKey, escapedComment + ' [評価なし]');
     }
+    client.lrange(commentKey, 0, 2 ,function(err, val) {
+      comments[id] = val;
+    });
   }
 }
 
