@@ -159,6 +159,7 @@ $(function() {
     });
     var rank = 1;
     var nameToRating = [];
+    var appendHtml = [];
     _.each(sorted, function(item) {
       var avg = (item.ratingSum / item.ratingNum).toFixed(2);
       var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
@@ -178,9 +179,10 @@ $(function() {
           }
         }
       }
-      $table.append('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
+      appendHtml.push('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
       rank++;
     });
+    $table.append(appendHtml.join(''));
 
     var ratingFlg = localStorage.getItem('rating-done:' + groupId);
     if (ratingFlg && nameToRating.length > 0) {
