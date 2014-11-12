@@ -63,8 +63,8 @@ setInterval(function() { broadcastBaseInfo('rating'); }, 5000);
 function initLocalCache() {
   maintenanceInfo = { valid: true };
   eventInfo = { valid: false };
-  groupId = 3;
-  groupContent = 'ジャマイカ戦を1点〜10点で採点しよう!';
+  groupId = 5;
+  groupContent = 'ホンジュラス戦を1点〜10点で採点しよう!';
   playersMaster = [];
   ratingSumKeys = [];
   ratingNumKeys = [];
