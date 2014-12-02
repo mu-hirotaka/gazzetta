@@ -3,7 +3,9 @@ $(function() {
 
   var $playerList = $('#player-list');
   var $opinion = $('#player-opinion');
-  var $table = $('#user-rating > tbody');
+  var $reload = $('#rating-reload');
+  var $ratingTable = $('#user-rating > tbody');
+  var $ratingTableRecord = [];
   var $tweetBtn = $('#twitter-tweet-btn');
   var $summary = $('#summaries');
   var $summaryBtn = $('#summary-btn');
@@ -24,9 +26,15 @@ $(function() {
     var groupContent = data.groupContent;
     $('#group-content').text(groupContent);
 
+    var rand = Math.floor(Math.random () * 1000) + 1;
+    $reload.html('(<a href="http://rating.soccer-king.jp/?rnd=' + rand + '" style="font-size:16px;">更新</a>)');
+    $ratingTable.empty();
     $playerList.empty();
+
     var players = data.players;
-    _.each(players, function(item) {
+    _.each(players, function(item, index) {
+      var rank = index + 1;
+      $ratingTable.append('<tr><td class="rank" style="text-align: right;">' + rank + '</td><td class="rating-name"></td><td class="rating-value" style="text-align: right;"></td><td class="rating-sum" style="text-align: right;"></td><td class="rating-my-value">評価なし</td></tr>');
       var cache = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       if (cache) {
         return;
@@ -75,6 +83,9 @@ $(function() {
       $playerImage.css("background-image", "url('/images/" + item.group + '/' + item.id + ".png')");
       $playerImage.addClass('player-img-detail');
 
+    });
+    _.each($ratingTable.children(), function(item) {
+      $ratingTableRecord.push($(item));
     });
 
     var summaryCache = localStorage.getItem('summary-' + data.group);
@@ -150,17 +161,22 @@ $(function() {
   }
 
   function updateRatingView(playersMap, groupId) {
-    $table.empty();
-    var filtered = _.filter(playersMap, function(item) {
-      return item.ratingSum > 0;
+    var ratedPlayers = [];
+    var unratedPlayers = [];
+    _.each(playersMap, function(item) {
+      if (item.ratingSum > 0) {
+        ratedPlayers.push(item);
+      } else {
+        unratedPlayers.push(item);
+      }
     });
-    var sorted = _.sortBy(filtered, function(item) {
+    var sortedRatedPlayers = _.sortBy(ratedPlayers, function(item) {
       return - item.ratingSum / item.ratingNum;
     });
+
     var rank = 1;
     var nameToRating = [];
-    var appendHtml = [];
-    _.each(sorted, function(item) {
+    _.each(sortedRatedPlayers, function(item) {
       var avg = (item.ratingSum / item.ratingNum).toFixed(2);
       var myRating = localStorage.getItem('player-id:' + item.group + ':' + item.id);
       var myRatingStr = '評価なし';
@@ -179,10 +195,23 @@ $(function() {
           }
         }
       }
-      appendHtml.push('<tr><td style="text-align: right;">' + rank + '</td><td>' + item.shortName + '</td><td style="text-align: right;">' + avg + '</td><td style="text-align: right;">' + item.ratingNum + '</td><td>' + myRatingStr + '</td></tr>');
+      if ($ratingTableRecord.length > 0) {
+        $ratingTableRecord[rank-1].find('.rating-name').text(item.shortName);
+        $ratingTableRecord[rank-1].find('.rating-value').text(avg);
+        $ratingTableRecord[rank-1].find('.rating-sum').text(item.ratingNum);
+        $ratingTableRecord[rank-1].find('.rating-my-value').html(myRatingStr);
+      }
       rank++;
     });
-    $table.append(appendHtml.join(''));
+
+    _.each(unratedPlayers, function(item) {
+      if ($ratingTableRecord.length > 0) {
+        $ratingTableRecord[rank-1].find('.rating-name').text(item.shortName);
+        $ratingTableRecord[rank-1].find('.rating-value').text('0.00');
+        $ratingTableRecord[rank-1].find('.rating-sum').text('0');
+      }
+      rank++;
+    });
 
     var ratingFlg = localStorage.getItem('rating-done:' + groupId);
     if (ratingFlg && nameToRating.length > 0) {
