@@ -14,14 +14,17 @@ $(function() {
   var $momLegend = $("#mom-legend");
   var chartCtx = $momChart.get(0).getContext("2d");
 
+  var initCounter = 0;
   function init(data) {
 
+    if (initCounter > 0) { return; }
     if (data.maintenance.valid === true) {
       $('#service-maintenance').show();
       return;
     } else {
       $('#service-open').show();
     }
+    initCounter++;
 
     var groupContent = data.groupContent;
     $('#group-content').text(groupContent);
