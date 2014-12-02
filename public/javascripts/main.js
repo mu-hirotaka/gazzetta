@@ -104,9 +104,12 @@ $(function() {
 
     var momCache = localStorage.getItem('mom-' + data.group);
     if (!momCache) {
+      $('#mom-select').empty();
+      $('#mom-select').append('<option value="0" selected>該当者なし</option>');
       _.each(players, function(item) {
         $('#mom-select').append('<option value="' + item.id + '">' + item.fullName + '</option>');
       });
+      $('#mom-btn').off();
       $('#mom-btn').on('click', function() {
         var id = $('#mom-select').val();
         socket.emit('post mom', {
@@ -121,6 +124,7 @@ $(function() {
 
     showEventView(data.eventInfo);
 
+    $('.player-btn').off();
     $('.player-btn').on('click', function() {
       var playerId = $(this).data('player-id');
       var groupId = $(this).data('group-id');
