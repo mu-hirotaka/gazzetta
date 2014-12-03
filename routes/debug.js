@@ -13,13 +13,19 @@ var Event = model.Event;
 var Maintenance = model.Maintenance;
 
 router.get('/', function(req, res) {
-  var uri = '';
-  if (process.env.NODE_ENV === 'production') {
-    uri = config.production.uri;
-  } else {
-    uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
-  }
-  res.render('debug/index', { title: '俺ガゼッタ', uri: uri });
+  Group.findOne({id:1}, function(err, group){
+    var gid = 1;
+    if (group) {
+      gid = group.currentValidId;
+    }
+    var uri = '';
+    if (process.env.NODE_ENV === 'production') {
+      uri = config.production.uri;
+    } else {
+      uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
+    }
+    res.render('debug/index', { title: '俺ガゼッタ', uri: uri, groupId: gid });
+  });
 });
 
 router.get('/players', function(req, res) {
@@ -44,13 +50,14 @@ router.post('/player', function(req, res) {
 });
 
 router.post('/update_player', function(req, res) {
+  var gid = parseInt(req.body.gid);
   Player.findOne({id:parseInt(req.body.id), group: parseInt(req.body.gid)}, function(err, player){
     player.fullName = req.body.fullName;
     player.shortName = req.body.shortName;
     player.valid = parseInt(req.body.valid) ? true : false;
     player.save();
   });
-  res.redirect('/skdebug/players');
+  res.redirect('/skdebug/players?gid=' + gid);
 });
 
 router.post('/delete_player', function(req, res) {
@@ -65,7 +72,13 @@ router.get('/localstrage_clear', function(req, res) {
 });
 
 router.get('/create_player', function(req, res) {
-  res.render('debug/create_player', {});
+  var url_parts = url.parse(req.url, true);
+  var groupId = url_parts.query['gid'];
+  if (groupId) {
+    res.render('debug/create_player', { groupId: groupId });
+  } else {
+    res.render('debug/create_player', { groupId: 0 });
+  }
 });
 
 router.post('/create_player_done', function(req, res) {
@@ -76,7 +89,7 @@ router.post('/create_player_done', function(req, res) {
   var valid = req.body.valid == 1 ? true : false;
   var player = new Player({ id: id, group: group, fullName: fullName, shortName: shortName, valid: valid });
   player.save(function(err) {
-    res.redirect('/skdebug/create_player');
+    res.redirect('/skdebug/create_player?gid=' + group);
   });
 });
 
