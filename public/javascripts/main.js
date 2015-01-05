@@ -171,9 +171,9 @@ $(function() {
     var ratedPlayers = [];
     var unratedPlayers = [];
     _.each(playersMap, function(item) {
-      if (item.ratingSum > 0) {
+      if (item && (item.ratingSum > 0)) {
         ratedPlayers.push(item);
-      } else {
+      } else if (item) {
         unratedPlayers.push(item);
       }
     });
@@ -242,7 +242,7 @@ $(function() {
 
   function updateMomView(playersMap) {
     var filtered = _.filter(playersMap, function(item) {
-      return item.momNum > 0;
+      return item && item.momNum && (item.momNum > 0);
     });
 
     var sorted = _.sortBy(filtered, function(item) {
@@ -265,7 +265,7 @@ $(function() {
 
   function updateCommentView(playersMap, groupId) {
     var filtered = _.filter(playersMap, function(item) {
-      return item.comments.length > 0;
+      return item && item.comments && item.comments.length > 0;
     });
     $opinion.empty();
     $opinion.append('<h3>みんなのコメント(各々最新3件)</h3>');
