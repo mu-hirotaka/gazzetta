@@ -14,7 +14,7 @@
       <ul style="padding-left: 10px;">
         <% for (var i=0; i < players.length; i++) { %>
         <li style="list-style:none; margin-bottom:5px;">
-          <div style="float:left;"><%= players[i].id %>:<%= players[i].group %>:<%= players[i].fullName %></div>
+        <div style="float:left;"><%= players[i].id %>:<%= players[i].group %>:<%= players[i].fullName %>:<%= players[i].valid %></div>
           <div style="float:left; margin-left: 5px;">
           <form action="/skdebug/player" method="POST">
             <input type="hidden" name="gid" value="<%= players[i].group %>"> 
