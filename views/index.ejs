@@ -13,7 +13,7 @@
     <title><%= title %></title>
     <link rel="shortcut icon" href="http://www.soccer-king.jp/favicon.ico">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel='stylesheet' href='/stylesheets/style.css?v=18' />
+    <link rel='stylesheet' href='/stylesheets/style.css?v=19' />
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -28,6 +28,8 @@
       <div class="my-jumbotron">
         <h2><%= title %></h2>
         <p id="group-content"></p>
+        <p class="tips">※ 採点したい選手だけでもOK!</p>
+        <p class="tips">※「<a href="#a1">採点ランキング</a>」で他のユーザーと採点を比べよう!</p>
       </div>
 
       <div id="service-open">
@@ -42,7 +44,7 @@
           <textarea id="summary-comment" placeholder="総評を入力してください" /></textarea>
           <button type="button" id="summary-btn" class="btn btn-sm">確定</button>
         </div>
-        <div id="rating-title"><h3>採点ランキング <span id="rating-reload"></span></h3></div>
+        <div id="rating-title"><h3 id="a1">採点ランキング <span id="rating-reload"></span></h3></div>
         <table id="user-rating" class="table table-striped">
           <thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th><th>あなた</th></tr></thead>
           <tbody></tbody>
@@ -74,6 +76,6 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/Chart.js"></script>
-    <script src="/javascripts/main.js?v=18"></script>
+    <script src="/javascripts/main.js?v=19"></script>
   </body>
 </html>

@@ -3,7 +3,7 @@ $(function() {
 
   var $playerList = $('#player-list');
   var $opinion = $('#player-opinion');
-  var $reload = $('#rating-reload');
+//  var $reload = $('#rating-reload');
   var $ratingTable = $('#user-rating > tbody');
   var $ratingTableRecord = [];
   var $tweetBtn = $('#twitter-tweet-btn');
@@ -29,8 +29,8 @@ $(function() {
     var groupContent = data.groupContent;
     $('#group-content').text(groupContent);
 
-    var rand = Math.floor(Math.random () * 1000) + 1;
-    $reload.html('(<a href="http://rating.soccer-king.jp/?rnd=' + rand + '" style="font-size:16px;">更新</a>)');
+//    var rand = Math.floor(Math.random () * 1000) + 1;
+//    $reload.html('(<a href="http://rating.soccer-king.jp/?rnd=' + rand + '" style="font-size:16px;">更新</a>)');
     $ratingTable.empty();
     $playerList.empty();
 
@@ -53,7 +53,7 @@ $(function() {
           + '</div>'
           + '<div class="col-xs-9">'
             + '<div class="player-input">'
-              + '<input id="player-input-id' + item.id + '" type="text" size="23" placeholder="評価コメントを入力">'
+              + '<input id="player-input-id' + item.id + '" type="text" size="23" placeholder="コメントを入力(任意)">'
               + '<select id="player-select-id' + item.id + '">'
                 + '<option value="10">10</option>'
                 + '<option value="9.5">9.5</option>'
