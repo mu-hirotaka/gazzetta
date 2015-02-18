@@ -337,3 +337,6 @@ footer {
 .record-btn:hover {
   color: #fff;
 }
+.record-table > tbody {
+  font-size: 12px;
+}
