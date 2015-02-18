@@ -1,6 +1,7 @@
 body {
   padding: 0px;
   background-color: #eee;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
 }
 
 .container {
@@ -321,4 +322,18 @@ footer {
 
 .tips {
   color: #ff69b4;
+}
+
+.record-btn {
+  background-color: #00002b;
+  border: 2px solid #333;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+  margin-top: 10px;
+  width: 98%;
+  opacity: 0.8;
+}
+.record-btn:hover {
+  color: #fff;
 }

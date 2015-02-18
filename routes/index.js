@@ -6,15 +6,17 @@ var model = require('../models.js');
 var redis = require('redis'),
     client = redis.createClient();
 
+var title = '俺ガゼッタ';
+
 /* GET home page. */
 router.get('/', function(req, res) {
   var uri = '';
   if (process.env.NODE_ENV === 'production') {
     uri = config.production.uri;
-    res.render('index', { title: '俺ガゼッタ', uri: uri, env: 'production'});
+    res.render('index', { title: title, uri: uri, env: 'production'});
   } else {
     uri = 'http://' + config.dev.host + ':' + config.dev.port + '/';
-    res.render('index', { title: '俺ガゼッタ', uri: uri, env: 'development'});
+    res.render('index', { title: title, uri: uri, env: 'development'});
   }
 });
 
@@ -30,7 +32,7 @@ router.get('/player_comments', function(req, res) {
   Player.findOne({ id: id, group: groupId }, function(err, player){
     if (player) {
       client.lrange(key, 0, 100, function(err, values) {
-        res.render('index/player_comments', { title: '俺ガゼッタ', player: player, comments: values });
+        res.render('index/player_comments', { title: title, player: player, comments: values });
       });
     } else {
       res.redirect('/');
@@ -44,8 +46,16 @@ router.get('/summaries', function(req, res) {
   var key = "summary:" + groupId;
 
   client.lrange(key, 0, 100, function(err, values) {
-    res.render('index/summaries', { title: '俺ガゼッタ', summaries: values });
+    res.render('index/summaries', { title: title, summaries: values });
   });
+});
+
+router.get('/records', function(req, res) {
+  res.render('index/records', { title: title });
+});
+
+router.get('/record/:id', function(req, res) {
+  res.render('index/record/' + req.params.id, { title: title });
 });
 
 module.exports = router;

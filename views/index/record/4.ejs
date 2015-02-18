@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css?v=20' />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sk-title"><a href="http://www.soccer-king.jp/"><img height="44" src="/images/logo.png" alt="サッカーキング - 世界のサッカー情報サイト"></a></div>
+      <div class="my-jumbotron">
+        <h2><%= title %></h2>
+      </div>
+      <div id="player-opinion">
+        <h3>採点ランキング(ブラジル戦)</h3>
+        <table id="user-rating" class="table table-striped">
+          <thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>岡崎慎司</td><td>6.02</td><td>1266</td></tr>
+            <tr><td>2</td><td>武藤嘉紀</td><td>5.46</td><td>1286</td></tr>
+            <tr><td>3</td><td>細貝萌</td><td>5.24</td><td>1065</td></tr>
+            <tr><td>4</td><td>太田宏介</td><td>5.20</td><td>1135</td></tr>
+            <tr><td>5</td><td>本田圭佑</td><td>5.12</td><td>1181</td></tr>
+            <tr><td>6</td><td>酒井高徳</td><td>5.11</td><td>1167</td></tr>
+            <tr><td>7</td><td>森重真人</td><td>5.03</td><td>1130</td></tr>
+            <tr><td>8</td><td>柿谷曜一朗</td><td>4.99</td><td>1136</td></tr>
+            <tr><td>9</td><td>小林悠</td><td>4.90</td><td>1152</td></tr>
+            <tr><td>10</td><td>塩谷司</td><td>4.87</td><td>1144</td></tr>
+            <tr><td>11</td><td>柴崎岳</td><td>4.86</td><td>1247</td></tr>
+            <tr><td>12</td><td>鈴木大輔</td><td>4.77</td><td>661</td></tr>
+            <tr><td>13</td><td>田中順也</td><td>4.42</td><td>1132</td></tr>
+            <tr><td>14</td><td>森岡亮太</td><td>4.09</td><td>1147</td></tr>
+            <tr><td>15</td><td>アギーレ</td><td>4.03</td><td>1156</td></tr>
+            <tr><td>16</td><td>田口泰士</td><td>4.01</td><td>1155</td></tr>
+            <tr><td>17</td><td>川島永嗣</td><td>3.66</td><td>1251</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <center><button type="button" id="back-btn" class="btn" onclick="location.href='/'">トップに戻る</button></center>
+    </div>
+    <% include ../../shared/footer %>
+  </body>
+</html>

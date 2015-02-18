@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css?v=20' />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sk-title"><a href="http://www.soccer-king.jp/"><img height="44" src="/images/logo.png" alt="サッカーキング - 世界のサッカー情報サイト"></a></div>
+      <div class="my-jumbotron">
+        <h2><%= title %></h2>
+      </div>
+      <div id="player-opinion">
+        <h3>過去の記録</h3>
+        <table id="user-rating" class="table table-striped">
+          <thead><tr><th>開催日</th><th>対戦カード</th><th>スコア</th></tr></thead>
+          <tbody>
+            <tr><td>2015/01/23</td><td><a href="/record/10">日本vsUAE</a></td><td>&#x25CF;1-1(PK4-5)</td></tr>
+            <tr><td>2015/01/20</td><td><a href="/record/9">日本vsヨルダン</a></td><td>&#x25CB;2-0</td></tr>
+            <tr><td>2015/01/16</td><td><a href="/record/8">日本vsイラク</a></td><td>&#x25CB;1-0</td></tr>
+            <tr><td>2015/01/12</td><td><a href="/record/7">日本vsパレスチナ</a></td><td>&#x25CB;4-0</td></tr>
+            <tr><td>2014/11/18</td><td><a href="/record/6">日本vsオーストラリア</a></td><td>&#x25CB;2-1</td></tr>
+            <tr><td>2014/11/14</td><td><a href="/record/5">日本vsホンジュラス</a></td><td>&#x25CB;6-0</td></tr>
+            <tr><td>2014/10/14</td><td><a href="/record/4">日本vsブラジル</a></td><td>&#x25CF;0-4</td></tr>
+            <tr><td>2014/10/10</td><td><a href="/record/3">日本vsジャマイカ</a></td><td>&#x25CB;1-0</td></tr>
+            <tr><td>2014/09/09</td><td><a href="/record/2">日本vsベネズエラ</a></td><td>&#x25B3;2-2</td></tr>
+            <tr><td>2014/09/05</td><td><a href="/record/1">日本vsウルグアイ</a></td><td>&#x25CF;0-2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <center><button type="button" id="back-btn" class="btn" onclick="location.href='/'">トップに戻る</button></center>
+    </div>
+    <% include ../shared/footer %>
+  </body>
+</html>
