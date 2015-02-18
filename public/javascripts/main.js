@@ -53,7 +53,7 @@ $(function() {
           + '</div>'
           + '<div class="col-xs-9">'
             + '<div class="player-input">'
-              + '<input id="player-input-id' + item.id + '" type="text" size="23" placeholder="コメントを入力(任意)">'
+              + '<input id="player-input-id' + item.id + '" type="text" size="22" placeholder="コメント入力(任意)">'
               + '<select id="player-select-id' + item.id + '">'
                 + '<option value="10">10</option>'
                 + '<option value="9.5">9.5</option>'
