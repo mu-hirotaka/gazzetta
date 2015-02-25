@@ -340,3 +340,15 @@ footer {
 .record-table > tbody {
   font-size: 12px;
 }
+
+.oleven-btn {
+  background-color: #ff4e00;
+  border: 2px solid #ff4e00;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4);
+  margin-top: 10px;
+  width: 98%;
+  opacity: 0.8;
+}
+
