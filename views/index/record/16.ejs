@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <% include ../../shared/css_style %>
+    <% include ../../shared/ga %>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sk-title"><a href="http://www.soccer-king.jp/"><img height="44" src="/images/logo.png" alt="サッカーキング - 世界のサッカー情報サイト"></a></div>
+      <div class="my-jumbotron">
+        <h2><%= title %></h2>
+      </div>
+      <div id="player-opinion">
+        <h3>採点ランキング(韓国戦)</h3>
+        <table id="user-rating" class="table table-striped">
+          <thead><tr><th>順位</th><th>選手</th><th>平均</th><th>投票数</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>山口蛍</td><td>5.85</td><td>2438</td></tr>
+            <tr><td>2</td><td>倉田秋</td><td>5.47</td><td>2454</td></tr>
+            <tr><td>3</td><td>藤田直之</td><td>5.16</td><td>2329</td></tr>
+            <tr><td>4</td><td>遠藤航</td><td>5.10</td><td>2231</td></tr>
+            <tr><td>5</td><td>柴崎岳</td><td>5.08</td><td>2489</td></tr>
+            <tr><td>6</td><td>西川周作</td><td>4.95</td><td>2267</td></tr>
+            <tr><td>7</td><td>槙野智章</td><td>4.77</td><td>2385</td></tr>
+            <tr><td>8</td><td>宇佐美貴史</td><td>4.58</td><td>2106</td></tr>
+            <tr><td>9</td><td>興梠慎三</td><td>4.56</td><td>2326</td></tr>
+            <tr><td>10</td><td>森重真人</td><td>4.54</td><td>2276</td></tr>
+            <tr><td>11</td><td>浅野拓磨</td><td>4.53</td><td>2478</td></tr>
+            <tr><td>12</td><td>太田宏介</td><td>4.39</td><td>2307</td></tr>
+            <tr><td>13</td><td>ハリルホジッチ</td><td>3.93</td><td>2481</td></tr>
+            <tr><td>14</td><td>川又堅碁</td><td>3.75</td><td>2011</td></tr>
+            <tr><td>15</td><td>永井謙佑</td><td>3.15</td><td>2671</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <center><button type="button" id="back-btn" class="btn" onclick="location.href='/'">トップに戻る</button></center>
+    </div>
+    <% include ../../shared/footer %>
+  </body>
+</html>
